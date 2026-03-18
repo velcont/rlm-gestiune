@@ -977,7 +977,7 @@ document.addEventListener('click',e=>{if(e.target.classList.contains('overlay'))
 function renderCotMetrics(){
   const yr = document.getElementById('cot-year').value;
   const mems = yr==='all'?[...S.m2026,...S.m2025,...S.m2024]:getMems(yr);
-  const active = mems.filter(m=>m.totalPlata>0);
+  const active = mems.filter(m=>m.totalPlata>0||m.scutit);
   const td=active.reduce((s,m)=>s+(m.totalPlata||0),0);
   const ti=active.reduce((s,m)=>s+(m.incasat||0),0);
   const tr=active.reduce((s,m)=>s+(m.rest||0),0);
@@ -996,7 +996,7 @@ function renderCot(){
   const q=(document.getElementById('cot-q').value||'').toLowerCase();
   const yr=document.getElementById('cot-year').value;
   let list=[];
-  if(yr==='all'||yr==='2026') S.m2026.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2026'}));
+  if(yr==='all'||yr==='2026') S.m2026.filter(m=>m.totalPlata>0||m.scutit).forEach(m=>list.push({...m,year:'2026'}));
   if(yr==='all'||yr==='2025') S.m2025.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2025'}));
   if(yr==='all'||yr==='2024') S.m2024.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2024'}));
   if(q) list=list.filter(m=>m.nume.toLowerCase().includes(q)||(m.mmh||'').includes(q));
