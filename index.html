@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RLM Gheorghe Ioanovici 2055 SM</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#8B6914;--gold-l:#C9A84C;--gold-p:#F5EDD6;
+  --dark:#1A1410;--dark2:#2C2318;
+  --text:#2C2318;--text2:#6B5B3E;--text3:#9C8B6E;
+  --bg:#FDFAF4;--bg2:#F5EDD6;--bg3:#EDE3C8;
+  --bdr:rgba(139,105,20,0.18);--bdr2:rgba(139,105,20,0.35);
+  --green:#2D6A4F;--gbg:#D8F3DC;
+  --red:#9B2335;--rbg:#FDECEA;
+  --amber:#8B4F00;--abg:#FFF0D6;
+  --r:10px;--sh:0 2px 16px rgba(139,105,20,0.10);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+h1,h2,h3{font-family:'Crimson Pro',serif;font-weight:600}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:220px;min-height:100vh;background:var(--dark2);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;border-right:1px solid rgba(201,168,76,0.2)}
+.sb-logo{padding:20px 18px 14px;border-bottom:1px solid rgba(201,168,76,0.15)}
+.sb-logo .icon{font-size:26px;margin-bottom:6px}
+.sb-logo .loja{font-family:'Crimson Pro',serif;font-size:14px;color:var(--gold-l);font-weight:600;line-height:1.3}
+.sb-logo .sub{font-size:11px;color:rgba(201,168,76,0.45);margin-top:2px}
+nav{flex:1;padding:10px 0}
+.ns{font-size:10px;color:rgba(201,168,76,0.4);letter-spacing:1.5px;text-transform:uppercase;padding:12px 18px 4px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 18px;font-size:13px;color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.15s;border:none;background:none;width:100%;text-align:left;border-left:2px solid transparent}
+.ni:hover{color:var(--gold-l);background:rgba(201,168,76,0.06)}
+.ni.active{color:var(--gold-l);background:rgba(201,168,76,0.1);border-left-color:var(--gold-l);font-weight:500}
+.ni .ic{width:16px;text-align:center;font-size:13px}
+.sb-foot{padding:12px 18px;border-top:1px solid rgba(201,168,76,0.15);font-size:11px;color:rgba(201,168,76,0.3)}
+
+/* MAIN */
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column}
+.topbar{background:var(--bg);border-bottom:1px solid var(--bdr);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-title{font-family:'Crimson Pro',serif;font-size:20px;font-weight:600}
+.tb-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.tb-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.content{padding:24px 28px;flex:1}
+
+/* BUTTONS */
+.btn{padding:7px 14px;font-size:13px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;border:none;display:inline-flex;align-items:center;gap:5px}
+.btn-gold{background:var(--gold);color:white}.btn-gold:hover{background:var(--gold-l)}
+.btn-outline{background:transparent;border:1px solid var(--bdr2);color:var(--text2)}.btn-outline:hover{background:var(--bg2)}
+.btn-red{background:var(--red);color:white}.btn-red:hover{opacity:.88}
+.btn-green{background:var(--green);color:white}.btn-green:hover{opacity:.88}
+.btn-sm{padding:4px 10px;font-size:12px}
+.btn-xs{padding:3px 8px;font-size:11px}
+
+/* PANELS */
+.panel{display:none}.panel.active{display:block}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.metric{background:white;border:1px solid var(--bdr);border-radius:var(--r);padding:12px 14px}
+.metric-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.metric-val{font-family:'Crimson Pro',serif;font-size:22px;font-weight:600}
+.metric-val.g{color:var(--green)}.metric-val.r{color:var(--red)}.metric-val.a{color:var(--amber)}.metric-val.gold{color:var(--gold)}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:16px}
+.card-hdr{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;background:var(--bg);flex-wrap:wrap;gap:8px}
+.card-title{font-family:'Crimson Pro',serif;font-size:15px;font-weight:600}
+.card-body{padding:14px 16px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:500;border-bottom:1px solid var(--bdr);background:var(--bg);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gold-p)}
+.td-actions{display:flex;gap:4px;align-items:center}
+
+/* BADGES */
+.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap;display:inline-block}
+.bg-green{background:var(--gbg);color:var(--green)}
+.bg-red{background:var(--rbg);color:var(--red)}
+.bg-amber{background:var(--abg);color:var(--amber)}
+.bg-gold{background:var(--gold-p);color:var(--gold)}
+.bg-blue{background:#E6F1FB;color:#185FA5}
+
+/* FILTERS */
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.fi{padding:7px 11px;font-size:13px;border:1px solid var(--bdr2);border-radius:7px;background:white;color:var(--text);font-family:'DM Sans',sans-serif}
+.fi:focus{outline:none;border-color:var(--gold)}
+.fi-wide{flex:1;min-width:160px}
+.fb{padding:5px 12px;font-size:12px;border:1px solid var(--bdr);border-radius:20px;background:white;color:var(--text2);cursor:pointer;transition:all 0.15s}
+.fb.active{background:var(--gold);color:white;border-color:var(--gold)}
+.fb:hover:not(.active){border-color:var(--gold-l);color:var(--gold)}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,20,16,0.6);z-index:1000;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:white;border-radius:14px;width:90%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 48px rgba(26,20,16,0.3)}
+.modal-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Crimson Pro',serif;font-size:17px;font-weight:600}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1;padding:2px 6px}
+.modal-body{padding:18px 22px}
+.modal-foot{padding:10px 22px 18px;display:flex;gap:8px;justify-content:flex-end;align-items:center}
+
+/* FORM */
+.fg{margin-bottom:12px}
+.fl{font-size:12px;color:var(--text2);margin-bottom:3px;display:block;font-weight:500}
+.fi2{width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--bdr2);border-radius:7px;background:white;color:var(--text);font-family:'DM Sans',sans-serif}
+.fi2:focus{outline:none;border-color:var(--gold)}
+textarea.fi2{min-height:60px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* CHITANTA */
+.chitanta-wrap{background:var(--bg2);border:1.5px solid var(--gold);border-radius:12px;padding:24px 28px;margin-top:14px}
+.ch-title{font-family:'Crimson Pro',serif;font-size:18px;text-align:center;margin-bottom:3px}
+.ch-sub{font-size:11px;text-align:center;color:var(--text3);margin-bottom:14px}
+.ch-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dotted var(--bdr)}
+.ch-row:last-of-type{border-bottom:none}
+.ch-lbl{color:var(--text3);font-size:13px}
+.ch-val{font-weight:500;font-size:13px}
+.ch-sig{margin-top:12px;text-align:right;font-size:12px;color:var(--text3)}
+
+/* PRINT AREA */
+#print-area{display:none}
+@media print{
+  body>*{display:none!important}
+  #print-area{display:block!important;padding:20px}
+}
+
+/* PHOTO */
+.foto-zone{border:2px dashed var(--bdr2);border-radius:8px;padding:14px;text-align:center;cursor:pointer;color:var(--text3);font-size:13px;transition:border-color 0.15s}
+.foto-zone:hover{border-color:var(--gold);color:var(--gold)}
+.foto-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.foto-thumb{width:60px;height:60px;border-radius:6px;object-fit:cover;border:1px solid var(--bdr);cursor:pointer}
+.foto-thumb:hover{opacity:.8}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:8px}
+.lb-close{position:absolute;top:20px;right:24px;color:white;font-size:28px;cursor:pointer;background:none;border:none}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
+.prog-name{width:170px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prog-track{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.pf-full{background:var(--green)}.pf-part{background:#E9A400}.pf-none{background:#E24B4A;opacity:.3}
+.prog-amt{width:100px;text-align:right;color:var(--text3)}
+
+/* INNER TABS */
+.itabs{display:flex;border-bottom:1px solid var(--bdr);margin-bottom:18px}
+.itab{padding:8px 16px;font-size:13px;cursor:pointer;border-bottom:2px solid transparent;color:var(--text3);background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Sans',sans-serif;margin-bottom:-1px;transition:all .15s}
+.itab.active{color:var(--gold);border-bottom-color:var(--gold);font-weight:500}
+.itab:hover:not(.active){color:var(--text)}
+.ipanel{display:none}.ipanel.active{display:block}
+
+/* EMPTY */
+.empty{text-align:center;padding:32px 16px;color:var(--text3)}
+.empty-icon{font-size:32px;margin-bottom:8px}
+
+/* TIP BADGE clickable */
+.tip-badge{cursor:pointer;user-select:none;transition:opacity .15s}
+.tip-badge:hover{opacity:.75}
+</style>
+</head>
+<body>
+<div id="print-area"></div>
+<div class="lightbox" id="lb" onclick="closeLB()">
+  <button class="lb-close">×</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<div class="layout">
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="icon">⚒</div>
+    <div class="loja">RLM Gheorghe Ioanovici 2055 SM</div>
+    <div class="sub">Mark Masonry · Satu Mare</div>
+  </div>
+  <nav>
+    <div class="ns">Evidență</div>
+    <button class="ni active" onclick="nav('cotizatii',this)"><span class="ic">👥</span>Cotizații membri</button>
+    <button class="ni" onclick="nav('casa',this)"><span class="ic">💵</span>Registru casă</button>
+    <button class="ni" onclick="nav('banca',this)"><span class="ic">🏦</span>Jurnal bancă</button>
+    <div class="ns">Plăți externe</div>
+    <button class="ni" onclick="nav('obligatii',this)"><span class="ic">🏛</span>Obligații plată</button>
+    <button class="ni" onclick="nav('furnizori',this)"><span class="ic">🏢</span>Furnizori</button>
+    <div class="ns">Analiză</div>
+    <button class="ni" onclick="nav('rapoarte',this)"><span class="ic">📊</span>Rapoarte</button>
+  </nav>
+  <div class="sb-foot">v3.0 · 2026</div>
+</aside>
+
+<div class="main">
+<div class="topbar">
+  <div>
+    <div class="tb-title" id="tb-title">Cotizații membri</div>
+    <div class="tb-sub" id="tb-sub">Situație 2025-2026</div>
+  </div>
+  <div class="tb-actions">
+    <button class="btn btn-outline btn-sm" onclick="exportJSON()">⬇ Backup JSON</button>
+    <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-f').click()">⬆ Import JSON</button>
+    <input type="file" id="import-f" style="display:none" accept=".json" onchange="importJSON(event)">
+    <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red)" onclick="resetData()">↺ Reset</button>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ======== COTIZATII ======== -->
+<div id="p-cotizatii" class="panel active">
+  <div class="itabs">
+    <button class="itab active" onclick="itab('cot','lista',this)">Listă membri</button>
+    <button class="itab" onclick="itab('cot','incasare',this)">Înregistrare încasare</button>
+  </div>
+  <div id="cot-lista" class="ipanel active">
+    <div class="metrics" id="cot-metrics"></div>
+    <div class="filter-row">
+      <input class="fi fi-wide" type="text" id="cot-q" placeholder="🔍 Caută după nume sau MMH..." oninput="renderCot()">
+      <button class="fb active" onclick="setF('cot','all',this)">Toți</button>
+      <button class="fb" onclick="setF('cot','paid',this)">Achitat</button>
+      <button class="fb" onclick="setF('cot','partial',this)">Parțial</button>
+      <button class="fb" onclick="setF('cot','unpaid',this)">Restant</button>
+      <select class="fi" id="cot-year" onchange="renderCot();renderCotMetrics()">
+        <option value="2026" selected>2025-2026</option>
+        <option value="2025">2024-2025</option>
+        <option value="2024">2023-2024</option>
+        <option value="all">Toți anii</option>
+      </select>
+    </div>
+    <div class="card">
+      <div class="card-hdr">
+        <span class="card-title">Membri</span>
+        <button class="btn btn-gold btn-sm" onclick="openModal('m-incasare')">+ Înregistrează plată</button>
+      </div>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>Nume</th><th>MMH</th><th>An</th><th>Tip</th>
+          <th>Total</th><th>Încasat</th><th>Rest</th>
+          <th>Mod</th><th>Data</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="cot-tbody"></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+  <div id="cot-incasare" class="ipanel">
+    <div class="card" style="max-width:560px">
+      <div class="card-hdr"><span class="card-title">Înregistrare încasare nouă</span></div>
+      <div class="card-body" id="ni-body">
+        <div class="fg">
+          <label class="fl">Selectează membrul</label>
+          <select class="fi2" id="ni-mem"></select>
+        </div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Suma (RON)</label><input class="fi2" type="number" id="ni-suma" placeholder="0"></div>
+          <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="ni-data"></div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label class="fl">Mod încasare</label>
+            <select class="fi2" id="ni-mod">
+              <option>Cash</option><option>ING</option><option>BT</option><option>Transfer bancar</option><option>Alta metodă</option>
+            </select>
+          </div>
+  
+        </div>
+        <div class="fg"><label class="fl">Observații</label><input class="fi2" type="text" id="ni-obs" placeholder="opțional..."></div>
+        <div class="fg">
+          <label class="fl">Atașează dovadă plată</label>
+          <div class="foto-zone" onclick="document.getElementById('ni-foto').click()">📎 Click pentru imagini</div>
+          <input type="file" id="ni-foto" style="display:none" accept="image/*" multiple onchange="addFotos(event,'ni-fprev')">
+          <div class="foto-grid" id="ni-fprev"></div>
+        </div>
+        <button class="btn btn-gold" style="width:100%" onclick="saveNI()">Salvează & generează chitanță</button>
+        <div id="ni-chitanta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CASA ======== -->
+<div id="p-casa" class="panel">
+  <div class="metrics" id="casa-metrics"></div>
+  <div class="filter-row">
+    <button class="btn btn-gold btn-sm" onclick="openModal('m-casa')">+ Adaugă înregistrare</button>
+    <button class="btn btn-outline btn-sm" onclick="exportCSV('casa')">⬇ CSV</button>
+    <button class="btn btn-outline btn-sm" onclick="printTable('casa')">🖨 Listează</button>
+    <input class="fi fi-wide" type="text" id="casa-q" placeholder="🔍 Caută..." oninput="renderCasa()">
+    <select class="fi" id="casa-tip" onchange="renderCasa()">
+      <option value="all">Toate</option>
+      <option value="intrare">Intrări</option>
+      <option value="iesire">Ieșiri</option>
+    </select>
+    <input class="fi" type="month" id="casa-luna" onchange="renderCasa()" title="Filtrează după lună">
+  </div>
+  <div class="card">
+    <div class="card-hdr">
+      <span class="card-title">Registru casă</span>
+      <span id="casa-sold" style="font-size:14px;font-weight:500"></span>
+    </div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Tip</th><th>Platitor/Beneficiar</th><th>Data</th><th>Suma (RON)</th><th>Descriere</th><th>Foto</th><th></th></tr></thead>
+      <tbody id="casa-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ======== BANCA ======== -->
+<div id="p-banca" class="panel">
+  <div class="itabs">
+    <button class="itab active" onclick="itab('banca','ron',this)">Cont RON</button>
+    <button class="itab" onclick="itab('banca','gbp',this)">Cont GBP</button>
+  </div>
+  <div id="banca-ron" class="ipanel active">
+    <div class="metrics" id="ron-metrics"></div>
+    <div class="filter-row">
+      <button class="btn btn-gold btn-sm" onclick="openModal('m-ron')">+ Adaugă tranzacție RON</button>
+      <button class="btn btn-outline btn-sm" onclick="exportCSV('ron')">⬇ CSV</button>
+      <button class="btn btn-outline btn-sm" onclick="printTable('ron')">🖨 Listează</button>
+      <input class="fi fi-wide" type="text" id="ron-q" placeholder="🔍 Caută..." oninput="renderRON()">
+      <input class="fi" type="month" id="ron-luna" onchange="renderRON()" title="Filtrează după lună">
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Jurnal bancă RON</span><span id="ron-sold" style="font-size:14px;font-weight:500"></span></div>
+      <div style="overflow-x:auto">
+      <table><thead><tr><th>Tip</th><th>Platitor/Beneficiar</th><th>Data</th><th>Suma (RON)</th><th>Descriere</th><th></th></tr></thead>
+      <tbody id="ron-tbody"></tbody></table>
+      </div>
+    </div>
+  </div>
+  <div id="banca-gbp" class="ipanel">
+    <div class="metrics" id="gbp-metrics"></div>
+    <div class="filter-row">
+      <button class="btn btn-gold btn-sm" onclick="openModal('m-gbp')">+ Adaugă tranzacție GBP</button>
+      <button class="btn btn-outline btn-sm" onclick="exportCSV('gbp')">⬇ CSV</button>
+      <button class="btn btn-outline btn-sm" onclick="printTable('gbp')">🖨 Listează</button>
+      <input class="fi fi-wide" type="text" id="gbp-q" placeholder="🔍 Caută..." oninput="renderGBP()">
+      <input class="fi" type="month" id="gbp-luna" onchange="renderGBP()" title="Filtrează după lună">
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Jurnal bancă GBP</span><span id="gbp-sold" style="font-size:14px;font-weight:500"></span></div>
+      <div style="overflow-x:auto">
+      <table><thead><tr><th>Tip</th><th>Platitor/Beneficiar</th><th>Data</th><th>Suma (GBP)</th><th>Descriere</th><th></th></tr></thead>
+      <tbody id="gbp-tbody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== OBLIGATII ======== -->
+<div id="p-obligatii" class="panel">
+  <div id="obl-alerts" style="margin-bottom:14px"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" id="obl-cards"></div>
+</div>
+
+<!-- ======== FURNIZORI ======== -->
+<div id="p-furnizori" class="panel">
+  <div class="filter-row">
+    <button class="btn btn-gold btn-sm" onclick="openFurnizorModal()">+ Adaugă furnizor</button>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Furnizori și parteneri</span></div>
+    <table>
+      <thead><tr><th>Nume</th><th>IBAN</th><th>Bancă</th><th>CUI</th><th>Referință</th><th></th></tr></thead>
+      <tbody id="furn-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ======== RAPOARTE ======== -->
+<div id="p-rapoarte" class="panel">
+  <div class="filter-row">
+    <label class="fl" style="margin:0;align-self:center">Perioadă:</label>
+    <input class="fi" type="date" id="rap-from">
+    <span style="color:var(--text3);align-self:center">—</span>
+    <input class="fi" type="date" id="rap-to">
+    <button class="btn btn-gold btn-sm" onclick="renderRapoarte()">Aplică</button>
+    <button class="btn btn-outline btn-sm" onclick="printTable('rap')">🖨 Listează raport</button>
+  </div>
+  <div class="metrics" id="rap-metrics"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Colectare 2025-2026</span></div>
+      <div class="card-body" id="rap-prog"></div>
+    </div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Restanțieri 2025-2026</span></div>
+      <div class="card-body" id="rap-rest"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><span class="card-title">Solduri conturi</span></div>
+    <div class="card-body" id="rap-solduri"></div>
+  </div>
+</div>
+
+</div><!-- end content -->
+</div><!-- end main -->
+</div><!-- end layout -->
+
+<!-- ========= MODALS ========= -->
+
+<!-- FISA MEMBRU -->
+<div class="overlay" id="m-fisa">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-hdr">
+      <span class="modal-title">Fișă membru</span>
+      <button class="modal-close" onclick="closeModal('m-fisa')">×</button>
+    </div>
+    <div class="modal-body" id="m-fisa-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('m-fisa')">Închide</button>
+      <button class="btn btn-gold" onclick="printFisa()">🖨 Printează fișa</button>
+    </div>
+  </div>
+</div>
+
+<!-- INCASARE (modal) -->
+<div class="overlay" id="m-incasare">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Înregistrare plată</span>
+      <button class="modal-close" onclick="closeModal('m-incasare')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg"><label class="fl">Selectează membrul</label><select class="fi2" id="mi-mem"></select><div id="mi-warn"></div></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Suma (RON)</label><input class="fi2" type="number" id="mi-suma"></div>
+        <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="mi-data"></div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Mod</label>
+          <select class="fi2" id="mi-mod">
+            <option>Cash</option><option>ING</option><option>BT</option><option>Transfer bancar</option><option>Altă metodă</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">An cotizație</label>
+          <select class="fi2" id="mi-an">
+            <option value="2026">2025-2026</option>
+            <option value="2025">2024-2025</option>
+            <option value="2024">2023-2024</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Observații</label><input class="fi2" type="text" id="mi-obs"></div>
+      <div class="fg">
+        <label class="fl">Dovadă plată</label>
+        <div class="foto-zone" onclick="document.getElementById('mi-foto').click()">📎 Atașează imagini</div>
+        <input type="file" id="mi-foto" style="display:none" accept="image/*" multiple onchange="addFotos(event,'mi-fprev')">
+        <div class="foto-grid" id="mi-fprev"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('m-incasare')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveMI()">Salvează & chitanță</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHITANTA -->
+<div class="overlay" id="m-chitanta">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Chitanță emisă</span>
+      <button class="modal-close" onclick="closeModal('m-chitanta')">×</button>
+    </div>
+    <div class="modal-body" id="m-chitanta-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('m-chitanta')">Închide</button>
+      <button class="btn btn-gold" onclick="printChitanta()">🖨 Printează</button>
+    </div>
+  </div>
+</div>
+
+<!-- CASA -->
+<div class="overlay" id="m-casa">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="m-casa-title">Înregistrare casă</span>
+      <button class="modal-close" onclick="closeModal('m-casa')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <label class="fl">Selectează rapid (opțional)</label>
+        <select class="fi2" id="casa-rapid" onchange="applyRapid('casa')">
+          <option value="">— alege din listă —</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Tip</label>
+          <select class="fi2" id="casa-etip">
+            <option value="intrare">▲ Intrare (încasare)</option>
+            <option value="iesire">▼ Ieșire (plată)</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="casa-edata"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Platitor / Beneficiar</label><input class="fi2" type="text" id="casa-eparte"></div>
+        <div class="fg"><label class="fl">Suma (RON)</label><input class="fi2" type="number" id="casa-esuma"></div>
+      </div>
+      <div class="fg"><label class="fl">Descriere</label><input class="fi2" type="text" id="casa-edesc"></div>
+      <div class="fg">
+        <label class="fl">Dovadă / Document</label>
+        <div class="foto-zone" onclick="document.getElementById('casa-efoto').click()">📎 Atașează imagini</div>
+        <input type="file" id="casa-efoto" style="display:none" accept="image/*" multiple onchange="addFotos(event,'casa-efprev')">
+        <div class="foto-grid" id="casa-efprev"></div>
+      </div>
+    </div>
+    <div class="modal-foot" id="casa-efoot">
+      <button class="btn btn-outline" onclick="closeModal('m-casa')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveCasa()">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- RON -->
+<div class="overlay" id="m-ron">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="m-ron-title">Tranzacție RON</span>
+      <button class="modal-close" onclick="closeModal('m-ron')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <label class="fl">Selectează rapid (opțional)</label>
+        <select class="fi2" id="ron-rapid" onchange="applyRapid('ron')">
+          <option value="">— alege din listă —</option>
+        </select>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Tip</label>
+          <select class="fi2" id="ron-etip">
+            <option value="intrare">▲ Credit (intrare)</option>
+            <option value="iesire">▼ Debit (ieșire)</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="ron-edata"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Platitor / Beneficiar</label><input class="fi2" type="text" id="ron-eparte"></div>
+        <div class="fg"><label class="fl">Suma (RON)</label><input class="fi2" type="number" id="ron-esuma"></div>
+      </div>
+      <div class="fg"><label class="fl">Descriere</label><input class="fi2" type="text" id="ron-edesc"></div>
+    </div>
+    <div class="modal-foot" id="ron-efoot">
+      <button class="btn btn-outline" onclick="closeModal('m-ron')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveTranzactie('ron')">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- GBP -->
+<div class="overlay" id="m-gbp">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="m-gbp-title">Tranzacție GBP</span>
+      <button class="modal-close" onclick="closeModal('m-gbp')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Tip</label>
+          <select class="fi2" id="gbp-etip">
+            <option value="intrare">▲ Credit</option>
+            <option value="iesire">▼ Debit</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="gbp-edata"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Platitor / Beneficiar</label><input class="fi2" type="text" id="gbp-eparte"></div>
+        <div class="fg"><label class="fl">Suma (GBP)</label><input class="fi2" type="number" id="gbp-esuma" step="0.01"></div>
+      </div>
+      <div class="fg"><label class="fl">Descriere</label><input class="fi2" type="text" id="gbp-edesc"></div>
+    </div>
+    <div class="modal-foot" id="gbp-efoot">
+      <button class="btn btn-outline" onclick="closeModal('m-gbp')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveTranzactie('gbp')">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- FURNIZOR -->
+<div class="overlay" id="m-furnizor">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="m-furn-title">Furnizor nou</span>
+      <button class="modal-close" onclick="closeModal('m-furnizor')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="furn-eid">
+      <div class="fg"><label class="fl">Nume *</label><input class="fi2" type="text" id="furn-enume"></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">IBAN</label><input class="fi2" type="text" id="furn-eiban"></div>
+        <div class="fg"><label class="fl">Bancă</label><input class="fi2" type="text" id="furn-ebanca"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label class="fl">CUI / Cod fiscal</label><input class="fi2" type="text" id="furn-ecui"></div>
+        <div class="fg"><label class="fl">Referință plată</label><input class="fi2" type="text" id="furn-eref"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-red btn-sm" id="furn-del-btn" style="display:none;margin-right:auto" onclick="deleteFurnizor()">🗑 Șterge</button>
+      <button class="btn btn-outline" onclick="closeModal('m-furnizor')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveFurnizor()">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- OBL PLATA -->
+<div class="overlay" id="m-obl">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title" id="m-obl-title">Înregistrare plată</span>
+      <button class="modal-close" onclick="closeModal('m-obl')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="obl-eid">
+      <div style="background:var(--gold-p);border:1px solid var(--bdr2);border-radius:7px;padding:8px 12px;font-size:12px;margin-bottom:12px" id="obl-hint"></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Suma</label><input class="fi2" type="number" id="obl-esuma" step="0.01"></div>
+        <div class="fg"><label class="fl">Data</label><input class="fi2" type="date" id="obl-edata"></div>
+      </div>
+      <div class="fg">
+        <label class="fl">Mod plată</label>
+        <select class="fi2" id="obl-emod">
+          <option>Transfer bancar RON</option>
+          <option>Transfer bancar GBP</option>
+          <option>Keystone Online</option>
+          <option>Altă metodă</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Referință / Confirmare</label><input class="fi2" type="text" id="obl-eobs"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal('m-obl')">Anulează</button>
+      <button class="btn btn-gold" onclick="saveObl()">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA VERSION & STORAGE
+// ============================================================
+const VER = '3.0.0';
+
+// Tip overrides stored PERMANENTLY, separate from main data
+function getTips(){try{return JSON.parse(localStorage.getItem('rlm_tips')||'{}')}catch(e){return{}}}
+function setTip(mmh,tip){const t=getTips();t[mmh]=tip;localStorage.setItem('rlm_tips',JSON.stringify(t))}
+function applyTips(arr){const t=getTips();return arr.map(m=>{const tip=t[m.mmh]||m.tip||'principal';const total=tip==='secundar'?350:650;return{...m,tip,totalPlata:total,rest:Math.max(0,total-(m.incasat||0))}})}
+
+function saveState(){localStorage.setItem('rlm_data',JSON.stringify(S))}
+function loadState(){
+  const v=localStorage.getItem('rlm_ver');
+  if(v!==VER){localStorage.removeItem('rlm_data');localStorage.setItem('rlm_ver',VER)}
+  let s=null;
+  try{const d=localStorage.getItem('rlm_data');if(d)s=JSON.parse(d)}catch(e){}
+  if(!s)s=freshState();
+  if(!s.furnizori)s.furnizori=initFurnizori();
+  if(!s.oblPayments)s.oblPayments=[];
+  if(!s.chitNr)s.chitNr=1;
+  s.m2026=applyTips(s.m2026);
+  return s;
+}
+function freshState(){return{
+  m2026:applyTips(JSON.parse(JSON.stringify(M2026))),
+  m2025:JSON.parse(JSON.stringify(M2025)),
+  m2024:JSON.parse(JSON.stringify(M2024)),
+  casa:JSON.parse(JSON.stringify(CASA_INIT)),
+  ron:JSON.parse(JSON.stringify(RON_INIT)),
+  gbp:JSON.parse(JSON.stringify(GBP_INIT)),
+  payments:[],oblPayments:[],chitNr:1,
+  furnizori:initFurnizori()
+}}
+function initFurnizori(){return[
+  {id:'f1',nume:'District Ordinul Mark Romania',iban:'RO82BTRLRONCRT0CR5064501',banca:'Banca Transilvania',cui:'',ref:'Donație Mark'},
+  {id:'f2',nume:'Grand Lodge Mark Master Masons',iban:'GB72CLYD82120860225538',banca:'Clydesdale Bank',cui:'',ref:'Sort:82-12-08 A/C:60225538 REF:Order and Unit Number'},
+  {id:'f3',nume:'Templu Oradea',iban:'',banca:'',cui:'',ref:'Chirie templu'},
+]}
+
+// ============================================================
+// INITIAL DATA
+// ============================================================
+const M2026=[
+  {nr:1,mmh:'1263833',nume:'BOTA Cosmin Gheorghe',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:2,mmh:'1263834',nume:'BUNOIU Flavius Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:3,mmh:'1260241',nume:'CARPINEANU Cristian',totalPlata:350,incasat:300,rest:50,mod:'Cash',data:'13.12.2025',tip:'secundar'},
+  {nr:4,mmh:'1272212',nume:'COVACI Cristian Dumitru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:5,mmh:'1268186',nume:'DEMIAN Radu Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:6,mmh:'1269556',nume:'DERBAN Adrian Traian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:7,mmh:'1256434',nume:'DUMITRAS Daniel George Sebastian',totalPlata:650,incasat:350,rest:300,mod:'Banca',data:'23.01.2026',tip:'principal'},
+  {nr:8,mmh:'1269555',nume:'FLOREA Adrian Gheorghe',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:9,mmh:'1263835',nume:'GEORGESCU Dragos',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:10,mmh:'1267042',nume:'GHERAI Attila Rares',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:11,mmh:'1268185',nume:'GURKA Danut Eugen',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:12,mmh:'1263837',nume:'HAISIUC Emanuel',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:13,mmh:'1263838',nume:'HAVRINCEA Adrian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:14,mmh:'1263839',nume:'HENCIU Andrei',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:15,mmh:'1271417',nume:'HYSLOP QUAYLE James Robert',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:16,mmh:'1265207',nume:'ICONAR Alin Horea',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:17,mmh:'1264527',nume:'KOVACS Zsolt',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:18,mmh:'1263840',nume:'LASZLO Robert Istvan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:19,mmh:'1264529',nume:'LAZARESCU Dorin Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:20,mmh:'1270483',nume:'LAZARESCU Victor Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:21,mmh:'1272209',nume:'LEVAI Andrei',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:22,mmh:'1267041',nume:'MANG Ioan Alexandru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:23,mmh:'1272206',nume:'MINTAS Ioan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:24,mmh:'1269558',nume:'NEGRUTIU Lucian Dan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:25,mmh:'1272207',nume:'NICA Gabriel Mircea',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:26,mmh:'1268184',nume:'PALAGHIANU Daniel Cristian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:27,mmh:'1269557',nume:'PASCA Cristian Vasile',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:28,mmh:'1264530',nume:'PAVEL Emilian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:29,mmh:'1272205',nume:'PIT Ovidiu Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:30,mmh:'1265206',nume:'POPA Casian Cosmin',totalPlata:350,incasat:150,rest:200,mod:'Banca',data:'14.01.2026',tip:'secundar'},
+  {nr:31,mmh:'1265208',nume:'PURDEA Gavril Vasile',totalPlata:650,incasat:600,rest:50,mod:'Banca',data:'18.02.2026',tip:'principal'},
+  {nr:32,mmh:'1263758',nume:'ROSCA PELAU Marius',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:33,mmh:'1263841',nume:'SEUCEA Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:34,mmh:'1272208',nume:'SLAVESCU Dan Alexandru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:35,mmh:'1264523',nume:'SUCIU GYORFI Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:36,mmh:'1263842',nume:'SZABO Norbert Rolland',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:37,mmh:'1263843',nume:'SZATMARI Ludovic',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:38,mmh:'1270484',nume:'SZEKELY Janos',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:39,mmh:'1264526',nume:'TODICA Serban Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:40,mmh:'1266378',nume:'TOMA-BOZERO Horatiu Ferdinand',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:41,mmh:'1263844',nume:'TURNER Michael Robert George',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:42,mmh:'1272211',nume:'VLAD Alexandru Mircea',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+];
+const M2025=[
+  {mmh:'1263841',nume:'SEUCEA Mihai',totalPlata:600,incasat:600,rest:0,mod:'Cash',data:'10.08.2025'},
+  {mmh:'1263839',nume:'HENCIU Andrei',totalPlata:1200,incasat:1200,rest:0,mod:'ING',data:'11.08.2025'},
+  {mmh:'1263834',nume:'BUNOIU Flavius Nicolae',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'28.08.2025'},
+  {mmh:'1263835',nume:'GEORGESCU Dragos',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'30.08.2025'},
+  {mmh:'1263842',nume:'SZABO Norbert Rolland',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1263833',nume:'BOTA Cosmin Gheorghe',totalPlata:1000,incasat:700,rest:300,mod:'ING',data:'10.08.2025'},
+  {mmh:'1263838',nume:'HAVRINCEA Adrian',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'11.08.2025'},
+  {mmh:'1264523',nume:'SUCIU GYORFI Nicolae',totalPlata:600,incasat:600,rest:0,mod:'Cash',data:'12.08.2025'},
+  {mmh:'1263843',nume:'SZATMARI Ludovic',totalPlata:600,incasat:600,rest:0,mod:'BT',data:'10.08.2025'},
+  {mmh:'1263837',nume:'HAISIUC Emanuel',totalPlata:600,incasat:600,rest:0,mod:'Cash',data:''},
+  {mmh:'1264529',nume:'LAZARESCU Dorin Nicolae',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'01.09.2025'},
+  {mmh:'1265207',nume:'ICONAR Alin Horea',totalPlata:1200,incasat:0,rest:1200,mod:'',data:''},
+  {mmh:'1264526',nume:'TODICA Serban Mihai',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'10.08.2025'},
+  {mmh:'1263840',nume:'LASZLO Robert Istvan',totalPlata:1200,incasat:1200,rest:0,mod:'ING',data:'10.08.2025'},
+  {mmh:'1263844',nume:'TURNER Michael Robert George',totalPlata:1200,incasat:0,rest:1200,mod:'',data:''},
+  {mmh:'1260241',nume:'CARPINEANU Cristian',totalPlata:300,incasat:300,rest:0,mod:'BT',data:'13.12.2025'},
+  {mmh:'1265208',nume:'PURDEA Gavril Vasile',totalPlata:1200,incasat:600,rest:600,mod:'BT',data:'18.02.2025'},
+  {mmh:'1264527',nume:'KOVACS Zsolt',totalPlata:1200,incasat:1200,rest:0,mod:'ING',data:'10.08.2025'},
+  {mmh:'1264530',nume:'PAVEL Emilian',totalPlata:1200,incasat:1200,rest:0,mod:'ING',data:'29.08.2025'},
+  {mmh:'1263758',nume:'ROSCA PELAU Marius',totalPlata:600,incasat:600,rest:0,mod:'Cash',data:'06.06.2025'},
+  {mmh:'1265206',nume:'POPA Casian Cosmin',totalPlata:300,incasat:450,rest:0,mod:'BT',data:'31.08.2025/14.01.2026'},
+  {mmh:'1256434',nume:'DUMITRAS Daniel George Sebastian',totalPlata:600,incasat:950,rest:0,mod:'ING',data:'11.08.2025/23.01.2026'},
+  {mmh:'1267041',nume:'MANG Ioan Alexandru',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1267042',nume:'GHERAI Attila Rares',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1268185',nume:'GURKA Danut Eugen',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1268184',nume:'PALAGHIANU Daniel Cristian',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'28.08.2025'},
+  {mmh:'1268186',nume:'DEMIAN Radu Mihai',totalPlata:600,incasat:600,rest:0,mod:'ING',data:'28.08.2025'},
+  {mmh:'1269555',nume:'FLOREA Adrian Gheorghe',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'13.12.2024'},
+  {mmh:'1269558',nume:'NEGRUTIU Lucian Dan',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'03.12.2024'},
+  {mmh:'1269556',nume:'DERBAN Adrian Traian',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'13.12.2024'},
+  {mmh:'1270483',nume:'LAZARESCU Victor Mihai',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'06.03.2025'},
+  {mmh:'1270484',nume:'SZEKELY Janos',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'06.03.2025'},
+  {mmh:'1271417',nume:'HYSLOP QUAYLE James Robert',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'04.05.2025'},
+];
+const M2024=[
+  {mmh:'1263841',nume:'SEUCEA Mihai',totalPlata:600,incasat:600,rest:0,mod:'',data:''},
+  {mmh:'1263839',nume:'HENCIU Andrei',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1263834',nume:'BUNOIU Flavius Nicolae',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:'06.06.2024'},
+  {mmh:'1263835',nume:'GEORGESCU Dragos',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:'15.07.2024'},
+  {mmh:'1263842',nume:'SZABO Norbert Rolland',totalPlata:600,incasat:600,rest:0,mod:'',data:''},
+  {mmh:'1263833',nume:'BOTA Cosmin Gheorghe',totalPlata:600,incasat:200,rest:400,mod:'Casa',data:'13.06.2024'},
+  {mmh:'1263838',nume:'HAVRINCEA Adrian',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:'08.07.2024'},
+  {mmh:'1264523',nume:'SUCIU GYORFI Nicolae',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:'07.01.2025'},
+  {mmh:'1263843',nume:'SZATMARI Ludovic',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:''},
+  {mmh:'1263837',nume:'HAISIUC Emanuel',totalPlata:600,incasat:600,rest:0,mod:'Casa',data:'31.12.2024'},
+  {mmh:'1264529',nume:'LAZARESCU Dorin Nicolae',totalPlata:600,incasat:600,rest:0,mod:'Casa',data:'13.06.2024'},
+  {mmh:'1265207',nume:'ICONAR Alin Horea',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1264526',nume:'TODICA Serban Mihai',totalPlata:600,incasat:600,rest:0,mod:'Banca',data:'04.10.2024'},
+  {mmh:'1263840',nume:'LASZLO Robert Istvan',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1263844',nume:'TURNER Michael Robert George',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1260241',nume:'CARPINEANU Cristian',totalPlata:300,incasat:300,rest:0,mod:'',data:''},
+  {mmh:'1265208',nume:'PURDEA Gavril Vasile',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1264527',nume:'KOVACS Zsolt',totalPlata:600,incasat:0,rest:600,mod:'',data:''},
+  {mmh:'1263758',nume:'ROSCA PELAU Marius',totalPlata:600,incasat:600,rest:0,mod:'Casa',data:'13.06.2024'},
+  {mmh:'1265206',nume:'POPA Casian Cosmin',totalPlata:600,incasat:600,rest:0,mod:'',data:''},
+  {mmh:'1256434',nume:'DUMITRAS Daniel George Sebastian',totalPlata:300,incasat:0,rest:300,mod:'',data:''},
+  {mmh:'1256882',nume:'POPOVICI Claudiu',totalPlata:300,incasat:300,rest:0,mod:'',data:''},
+  {mmh:'1267041',nume:'MANG Ioan Alexandru',totalPlata:970,incasat:970,rest:0,mod:'',data:''},
+  {mmh:'1267042',nume:'GHERAI Attila Rares',totalPlata:2200,incasat:2200,rest:0,mod:'Banca',data:'29.02.2024'},
+  {mmh:'1268184',nume:'PALAGHIANU Daniel Cristian',totalPlata:2200,incasat:2200,rest:0,mod:'Banca',data:'06.06.2024'},
+  {mmh:'1268185',nume:'GURKA Danut Eugen',totalPlata:2200,incasat:2200,rest:0,mod:'Casa',data:'06.06.2024'},
+  {mmh:'1268186',nume:'DEMIAN Radu Mihai',totalPlata:2200,incasat:2200,rest:0,mod:'Banca',data:'12.06.2024'},
+  {mmh:'1269555',nume:'FLOREA Adrian Gheorghe',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'13.12.2024'},
+  {mmh:'1269558',nume:'NEGRUTIU Lucian Dan',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'03.12.2024'},
+  {mmh:'1269556',nume:'DERBAN Adrian Traian',totalPlata:2500,incasat:2500,rest:0,mod:'Cash',data:'13.12.2024'},
+];
+const CASA_INIT=[
+  {id:'c1',tip:'intrare',parte:'Sold initial',data:'01.10.2024',suma:2737,desc:'Cash in seif',fotos:[]},
+  {id:'c2',tip:'intrare',parte:'Luci Negrutiu',data:'03.12.2024',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c3',tip:'iesire',parte:'District',data:'03.12.2024',suma:3200,desc:'Pachete avansare Florea Negrutiu',fotos:[]},
+  {id:'c4',tip:'iesire',parte:'District',data:'03.12.2024',suma:200,desc:'Cotizatie District Florea Negrutiu',fotos:[]},
+  {id:'c5',tip:'intrare',parte:'Adi Florea',data:'13.12.2024',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c6',tip:'iesire',parte:'Select',data:'13.12.2024',suma:100,desc:'Diferenta agapa',fotos:[]},
+  {id:'c7',tip:'intrare',parte:'Adi Derban',data:'13.12.2024',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c8',tip:'intrare',parte:'Lazarescu Victor',data:'06.03.2025',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c9',tip:'iesire',parte:'District',data:'06.03.2025',suma:4800,desc:'Pachete avansare Lazarescu Szekely Qualye',fotos:[]},
+  {id:'c10',tip:'iesire',parte:'District',data:'06.03.2025',suma:300,desc:'Cotizatie District Lazarescu Szekely Qualye',fotos:[]},
+  {id:'c11',tip:'intrare',parte:'Janos Szekely',data:'06.03.2025',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c12',tip:'intrare',parte:'James Qualye',data:'04.05.2025',suma:2500,desc:'Avansare',fotos:[]},
+  {id:'c13',tip:'intrare',parte:'Roska',data:'06.06.2025',suma:600,desc:'Cotizatii',fotos:[]},
+  {id:'c14',tip:'iesire',parte:'Flavius Bunoiu',data:'28.07.2025',suma:1200,desc:'30 carti Gheorghe Ioanovici',fotos:[]},
+  {id:'c15',tip:'iesire',parte:'Depus in banca',data:'31.07.2025',suma:200,desc:'Plata inscriere 3 frati KeyStone',fotos:[]},
+  {id:'c16',tip:'iesire',parte:'Miki - plata district',data:'30.07.2025',suma:5940,desc:'Plata district 180lei x 34 frati',fotos:[]},
+  {id:'c17',tip:'iesire',parte:'Corectie sold casa',data:'30.07.2025',suma:3145,desc:'Corectie sold',fotos:[]},
+  {id:'c18',tip:'intrare',parte:'Mihai Seucea',data:'10.08.2025',suma:600,desc:'Cotizatie 2024-2025',fotos:[]},
+  {id:'c19',tip:'intrare',parte:'Kovacs Zsolt',data:'10.08.2025',suma:1200,desc:'Cotizatie 2023-2024 + 2024-2025',fotos:[]},
+  {id:'c20',tip:'intrare',parte:'Todica Serban',data:'10.08.2025',suma:600,desc:'Cotizatie 2024-2025',fotos:[]},
+  {id:'c21',tip:'intrare',parte:'Bota Cosmin',data:'10.08.2025',suma:700,desc:'400 stingere cot.2023-2024 + 300 parte cot.2024-2025',fotos:[]},
+  {id:'c22',tip:'intrare',parte:'Laszlo Robert',data:'10.08.2025',suma:1200,desc:'Cotizatie 2023-2024 + 2024-2025',fotos:[]},
+  {id:'c23',tip:'intrare',parte:'Szatmari Lajos',data:'10.08.2025',suma:600,desc:'Cotizatie 2024-2025',fotos:[]},
+  {id:'c24',tip:'intrare',parte:'Henciu Andrei',data:'11.08.2025',suma:1200,desc:'Cotizatie 2023-2024 + 2024-2025',fotos:[]},
+  {id:'c25',tip:'intrare',parte:'Dumitras Daniel',data:'11.08.2025',suma:600,desc:'Cotizatie 2023-2024 + 2024-2025',fotos:[]},
+  {id:'c26',tip:'intrare',parte:'Havrincea Adrian',data:'11.08.2025',suma:600,desc:'Cotizatie 2024-2025',fotos:[]},
+  {id:'c27',tip:'intrare',parte:'Suciu-Gyorfi Nicolae',data:'12.08.2025',suma:600,desc:'Cotizatie 2024-2025',fotos:[]},
+  {id:'c28',tip:'iesire',parte:'Transfer in banca',data:'17.12.2025',suma:3100,desc:'Plata cotizatii Londra',fotos:[]},
+];
+const RON_INIT=[
+  {id:'r1',tip:'intrare',parte:'Todorica Serban',data:'04.10.2024',suma:600,desc:'Cotizatie 2024'},
+  {id:'r2',tip:'iesire',parte:'cont GBP',data:'04.10.2024',suma:600,desc:'Transfer in GBP'},
+  {id:'r3',tip:'intrare',parte:'Transfer din GBP',data:'22.11.2024',suma:2700,desc:'Transfer din GBP ptr pl District'},
+  {id:'r4',tip:'iesire',parte:'District',data:'22.11.2024',suma:2700,desc:'Plata District 100ron/membru'},
+  {id:'r5',tip:'intrare',parte:'Transfer din casa',data:'31.12.2024',suma:5000,desc:'Transfer din casa ptr cotizatii Londra'},
+  {id:'r6',tip:'iesire',parte:'cont GBP',data:'31.12.2024',suma:5000,desc:'Transfer in lire'},
+  {id:'r7',tip:'intrare',parte:'Miki',data:'07.01.2025',suma:600,desc:'Incasare cotizatie Miki'},
+  {id:'r8',tip:'iesire',parte:'cont GBP',data:'07.01.2025',suma:600,desc:'Transfer in lire'},
+  {id:'r9',tip:'intrare',parte:'Dumitras',data:'23.01.2025',suma:350,desc:'Cotizatie'},
+  {id:'r10',tip:'iesire',parte:'Covor',data:'10.03.2025',suma:2430,desc:'Covor'},
+  {id:'r11',tip:'intrare',parte:'depunere numerar',data:'31.07.2025',suma:200,desc:'Depunere numerar din casa'},
+  {id:'r12',tip:'iesire',parte:'cont GBP',data:'31.07.2025',suma:200,desc:'Transfer in lire'},
+  {id:'r13',tip:'intrare',parte:'imprumut Miki',data:'31.07.2025',suma:180,desc:'Imprumut Miki'},
+  {id:'r14',tip:'iesire',parte:'District',data:'31.07.2025',suma:180,desc:'Plata District 180ron/1 membru'},
+  {id:'r15',tip:'intrare',parte:'imprumut Miki',data:'31.07.2025',suma:5940,desc:'Imprumut Miki'},
+  {id:'r16',tip:'iesire',parte:'District',data:'31.07.2025',suma:5940,desc:'Plata District final 2024'},
+  {id:'r17',tip:'intrare',parte:'avansare Ovidiu Mihai',data:'26.09.2025',suma:2500,desc:'Avansare'},
+  {id:'r18',tip:'intrare',parte:'avansare Crisan Dumitru Covaci',data:'26.09.2025',suma:2500,desc:'Avansare'},
+  {id:'r19',tip:'intrare',parte:'avansare Alexandru Mircea Vlad',data:'29.09.2025',suma:2500,desc:'Avansare'},
+  {id:'r20',tip:'intrare',parte:'avansare Andrei Levai',data:'01.10.2025',suma:2500,desc:'Avansare'},
+  {id:'r21',tip:'iesire',parte:'chirie Templu Oradea',data:'01.10.2025',suma:1300,desc:'Plata chirie Templu Oradea'},
+  {id:'r22',tip:'intrare',parte:'avansare Mintas Ioan',data:'10.10.2025',suma:2500,desc:'Avansare'},
+  {id:'r23',tip:'intrare',parte:'avansare Slavescu Dan-Alex.',data:'13.10.2025',suma:2500,desc:'Avansare'},
+  {id:'r24',tip:'intrare',parte:'avansare Nica Gabriel-Mircea',data:'13.10.2025',suma:2500,desc:'Avansare'},
+  {id:'r25',tip:'iesire',parte:'pachet MVT',data:'20.10.2025',suma:600,desc:'Pachet MVT'},
+  {id:'r26',tip:'iesire',parte:'corectie sold',data:'20.10.2025',suma:11197.5,desc:'Corectie sold'},
+  {id:'r27',tip:'intrare',parte:'Carpineanu Cristian',data:'13.12.2025',suma:300,desc:'Cotizatie'},
+  {id:'r28',tip:'intrare',parte:'Transfer din cash',data:'17.12.2025',suma:3100,desc:'Transfer din cash'},
+  {id:'r29',tip:'iesire',parte:'schimb valutar GBP',data:'17.12.2025',suma:7511.28,desc:'Schimb valutar GBP'},
+  {id:'r30',tip:'intrare',parte:'Popa Casian Cosmin',data:'14.01.2026',suma:150,desc:'Cotizatie 2025-2026'},
+  {id:'r31',tip:'intrare',parte:'Dumitras Daniel George Sebastian',data:'23.01.2026',suma:350,desc:'Cotizatie 2025-2026'},
+  {id:'r32',tip:'intrare',parte:'Purdea Gavril Vasile',data:'18.02.2026',suma:600,desc:'Cotizatie 2025-2026'},
+  {id:'r33',tip:'intrare',parte:'imprumut Miki covor',data:'10.03.2026',suma:150,desc:'Imprumut Miki covor'},
+];
+const GBP_INIT=[
+  {id:'g1',tip:'intrare',parte:'Sold initial',data:'04.10.2024',suma:446.16,desc:'Sold initial'},
+  {id:'g2',tip:'intrare',parte:'Transfer din RON',data:'04.10.2024',suma:100.5,desc:'Transfer din RON'},
+  {id:'g3',tip:'iesire',parte:'District',data:'22.11.2024',suma:452.7,desc:'Transfer in RON ptr pl District'},
+  {id:'g4',tip:'intrare',parte:'Transfer din RON',data:'31.12.2024',suma:833.39,desc:'Transfer din RON ptr cotizatii Londra'},
+  {id:'g5',tip:'iesire',parte:'GLMM',data:'31.12.2024',suma:874.05,desc:'Cotizatii Londra'},
+  {id:'g6',tip:'intrare',parte:'Transfer din RON',data:'07.01.2025',suma:99.72,desc:'Transfer din RON cotizatie Miki'},
+  {id:'g7',tip:'iesire',parte:'GLMM',data:'25.06.2025',suma:150.42,desc:'Cotizatii'},
+  {id:'g8',tip:'intrare',parte:'Transfer din RON',data:'31.07.2025',suma:33.88,desc:'Transfer din RON ptr cotizatii Londra'},
+  {id:'g9',tip:'iesire',parte:'GLMM',data:'31.07.2025',suma:63.77,desc:'Cotizatii'},
+  {id:'g10',tip:'intrare',parte:'Transfer din RON',data:'17.12.2025',suma:1270,desc:'Transfer din RON ptr cotizatii Londra'},
+  {id:'g11',tip:'iesire',parte:'GLMM',data:'17.12.2025',suma:1253.83,desc:'Cotizatii'},
+  {id:'g12',tip:'iesire',parte:'comision',data:'17.12.2025',suma:13.14,desc:'Comision'},
+];
+const OBLIGATIONS=[
+  {id:'d2324',dest:'District Romania',titlu:'Cotizație District 2023-2024',period:'01.09.2023–31.08.2024',termen:'31.03.2026',ppm:100,moneda:'RON',nrM:34,iban:'RO82BTRLRONCRT0CR5064501',ref:'Donație Mark',urgent:true},
+  {id:'d2425',dest:'District Romania',titlu:'Cotizație District 2024-2025',period:'01.09.2024–31.08.2025',termen:'31.03.2026',ppm:180,moneda:'RON',nrM:42,iban:'RO82BTRLRONCRT0CR5064501',ref:'Donație Mark',urgent:true},
+  {id:'uk2425',dest:'Grand Lodge MMM Londra',titlu:'Cotizație Londra 2024-2025',period:'01.09.2024–31.08.2025',termen:'31.07.2025',ppm:27.5,moneda:'GBP',nrM:42,iban:'GB72CLYD82120860225538',ref:'Order and Unit Number',urgent:false},
+  {id:'uk2526',dest:'Grand Lodge MMM Londra',titlu:'Cotizație Londra 2025-2026',period:'01.09.2025–31.08.2026',termen:'31.07.2026',ppm:27.5,moneda:'GBP',nrM:42,iban:'GB72CLYD82120860225538',ref:'Order and Unit Number',urgent:false},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let S = loadState();
+let cotF = 'all'; // filter
+let editingId = null; // for edit modals
+
+// ============================================================
+// HELPERS
+// ============================================================
+const fmt = n => Number(n||0).toLocaleString('ro-RO');
+const fmtGBP = n => Number(n||0).toFixed(2);
+const today = () => new Date().toISOString().split('T')[0];
+const dd2iso = s => { if(!s)return''; const p=s.split('.'); return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:s; }
+const iso2dd = s => { if(!s)return''; const p=s.split('-'); return p.length===3?p[2]+'.'+p[1]+'.'+p[0]:s; }
+const sortByDate = arr => [...arr].sort((a,b)=>{
+  const pa=s=>{const p=s.split('.');return p.length===3?p[2]+p[1]+p[0]:s};
+  return pa(a.data||'').localeCompare(pa(b.data||''))
+});
+const status = m => !m.incasat||m.incasat<=0?'unpaid':m.rest>0?'partial':'paid';
+const initials = n => n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('');
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2);
+const yearLabel = y => y==='2026'?'2025-26':y==='2025'?'2024-25':'2023-24';
+const getMems = y => y==='2026'?S.m2026:y==='2025'?S.m2025:S.m2024;
+const findMem = (mmh,y) => getMems(y).find(m=>m.mmh===mmh);
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const NAV_TITLES = {cotizatii:'Cotizații membri',casa:'Registru casă',banca:'Jurnal bancă',obligatii:'Obligații plată',furnizori:'Furnizori / Parteneri',rapoarte:'Rapoarte'};
+const NAV_SUBS = {cotizatii:'Situație 2025-2026, 2024-2025 și 2023-2024',casa:'Intrări și ieșiri numerar',banca:'Cont RON și cont GBP',obligatii:'Plăți către District și Londra',furnizori:'Parteneri și conturi bancare',rapoarte:'Situație generală și statistici'};
+function nav(name, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+name).classList.add('active');
+  document.querySelectorAll('.ni').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tb-title').textContent = NAV_TITLES[name]||'';
+  document.getElementById('tb-sub').textContent = NAV_SUBS[name]||'';
+  if(name==='cotizatii'){renderCotMetrics();renderCot()}
+  if(name==='casa'){renderCasa()}
+  if(name==='banca'){renderRON();renderGBP()}
+  if(name==='obligatii'){renderObl()}
+  if(name==='furnizori'){renderFurn()}
+  if(name==='rapoarte'){renderRapoarte()}
+}
+function itab(group,name,btn){
+  document.querySelectorAll('#p-'+group+' .itab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#p-'+group+' .ipanel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(group+'-'+name).classList.add('active');
+}
+function setF(g,f,btn){
+  cotF=f;
+  document.querySelectorAll('#cot-lista .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCot();
+}
+
+// ============================================================
+// MODALS
+// ============================================================
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('click',e=>{if(e.target.classList.contains('overlay'))e.target.classList.remove('open')});
+
+// ============================================================
+// COTIZATII
+// ============================================================
+function renderCotMetrics(){
+  const yr = document.getElementById('cot-year').value;
+  const mems = yr==='all'?[...S.m2026,...S.m2025,...S.m2024]:getMems(yr);
+  const active = mems.filter(m=>m.totalPlata>0);
+  const td=active.reduce((s,m)=>s+(m.totalPlata||0),0);
+  const ti=active.reduce((s,m)=>s+(m.incasat||0),0);
+  const tr=active.reduce((s,m)=>s+(m.rest||0),0);
+  const na=active.filter(m=>status(m)==='paid').length;
+  const np=active.filter(m=>status(m)==='partial').length;
+  const nu=active.filter(m=>status(m)==='unpaid').length;
+  document.getElementById('cot-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total datorat</div><div class="metric-val gold">${fmt(td)} RON</div></div>
+    <div class="metric"><div class="metric-label">Total încasat</div><div class="metric-val g">${fmt(ti)} RON</div></div>
+    <div class="metric"><div class="metric-label">Rest de colectat</div><div class="metric-val r">${fmt(tr)} RON</div></div>
+    <div class="metric"><div class="metric-label">Achitați complet</div><div class="metric-val g">${na}</div></div>
+    <div class="metric"><div class="metric-label">Parțial achitați</div><div class="metric-val a">${np}</div></div>
+    <div class="metric"><div class="metric-label">Restanțieri</div><div class="metric-val r">${nu}</div></div>`;
+}
+function renderCot(){
+  const q=(document.getElementById('cot-q').value||'').toLowerCase();
+  const yr=document.getElementById('cot-year').value;
+  let list=[];
+  if(yr==='all'||yr==='2026') S.m2026.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2026'}));
+  if(yr==='all'||yr==='2025') S.m2025.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2025'}));
+  if(yr==='all'||yr==='2024') S.m2024.filter(m=>m.totalPlata>0).forEach(m=>list.push({...m,year:'2024'}));
+  if(q) list=list.filter(m=>m.nume.toLowerCase().includes(q)||(m.mmh||'').includes(q));
+  if(cotF==='paid') list=list.filter(m=>status(m)==='paid');
+  if(cotF==='partial') list=list.filter(m=>status(m)==='partial');
+  if(cotF==='unpaid') list=list.filter(m=>status(m)==='unpaid');
+  const tbody=document.getElementById('cot-tbody');
+  if(!list.length){tbody.innerHTML='<tr><td colspan="11" class="empty"><div class="empty-icon">🔍</div><div>Niciun rezultat</div></td></tr>';return}
+  tbody.innerHTML=list.map(m=>{
+    const st=status(m);
+    const bc=st==='paid'?'bg-green':st==='partial'?'bg-amber':'bg-red';
+    const bt=st==='paid'?'Achitat':st==='partial'?'Parțial':'Restant';
+    const ic=st==='unpaid'?'color:var(--red)':st==='partial'?'color:var(--amber)':'color:var(--green)';
+    const tipHtml=m.year==='2026'
+      ?'<span class="badge tip-badge '+(m.tip==='secundar'?'bg-amber':'bg-green')+'" onclick="toggleTip(\''+m.mmh+'\')">'+(m.tip==='secundar'?'Secundar 350':'Principal 650')+'</span>'
+      :'<span class="badge bg-gold">—</span>';
+    return '<tr>'
+      +'<td><b>'+m.nume+'</b></td>'
+      +'<td style="font-size:12px;color:var(--text3)">'+( m.mmh||'—')+'</td>'
+      +'<td><span class="badge bg-gold">'+yearLabel(m.year)+'</span></td>'
+      +'<td>'+tipHtml+'</td>'
+      +'<td>'+fmt(m.totalPlata)+' RON</td>'
+      +'<td style="'+ic+';font-weight:500">'+fmt(m.incasat)+' RON</td>'
+      +'<td style="'+(m.rest>0?'color:var(--red);font-weight:500':'')+'">'+(m.rest>0?fmt(m.rest)+' RON':'—')+'</td>'
+      +'<td style="font-size:12px">'+(m.mod||'—')+'</td>'
+      +'<td style="font-size:12px">'+(m.data||'—')+'</td>'
+      +'<td><span class="badge '+bc+'">'+bt+'</span></td>'
+      +'<td><button class="btn btn-outline btn-xs" onclick="showFisa(\''+m.mmh+'\',\''+m.year+'\')">Fișă</button></td>'
+      +'</tr>';
+  }).join('');
+}
+function toggleTip(mmh){
+  const m=S.m2026.find(x=>x.mmh===mmh);
+  if(!m)return;
+  m.tip=m.tip==='secundar'?'principal':'secundar';
+  m.totalPlata=m.tip==='secundar'?350:650;
+  m.rest=Math.max(0,m.totalPlata-(m.incasat||0));
+  setTip(mmh,m.tip);
+  saveState();
+  renderCot();
+  renderCotMetrics();
+}
+function showFisa(mmh,year){
+  const m=findMem(mmh,year);
+  if(!m)return;
+  const st=status(m);
+  const bc=st==='paid'?'bg-green':st==='partial'?'bg-amber':'bg-red';
+  const bt=st==='paid'?'Achitat complet':st==='partial'?'Parțial achitat':'Restant';
+  const extra=S.payments.filter(p=>p.mmh===mmh&&p.year===year);
+  const prevYear=year==='2026'?'2025':year==='2025'?'2024':null;
+  const prev=prevYear?findMem(mmh,prevYear):null;
+  let html='<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--bdr)">'
+    +'<div style="width:48px;height:48px;border-radius:50%;background:var(--gold-p);display:flex;align-items:center;justify-content:center;font-family:Crimson Pro,serif;font-size:17px;font-weight:600;color:var(--gold)">'+initials(m.nume)+'</div>'
+    +'<div><div style="font-family:Crimson Pro,serif;font-size:18px;font-weight:600">'+m.nume+'</div>'
+    +'<div style="font-size:12px;color:var(--text3)">MMH '+(m.mmh||'—')+' · '+(year==='2026'?'2025-2026':year==='2025'?'2024-2025':'2023-2024')+' · <span class="badge '+bc+'">'+bt+'</span></div>'
+    +(m.tip?'<div style="font-size:12px;color:var(--text3);margin-top:2px">Tip: '+(m.tip==='secundar'?'Lojă secundară':'Lojă principală')+'</div>':'')
+    +'</div></div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">'
+    +'<div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Total de plată</div><div style="font-size:15px;font-weight:500">'+fmt(m.totalPlata)+' RON</div></div>'
+    +'<div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Total încasat</div><div style="font-size:15px;font-weight:500;color:var(--green)">'+fmt(m.incasat)+' RON</div></div>'
+    +'<div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Rest de plată</div><div style="font-size:15px;font-weight:500;color:'+(m.rest>0?'var(--red)':'var(--green)')+'">'+( m.rest>0?fmt(m.rest)+' RON':'Achitat ✓')+'</div></div>'
+    +'<div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Mod / Data</div><div style="font-size:13px;font-weight:500">'+(m.mod||'—')+' / '+(m.data||'—')+'</div></div>'
+    +'</div>';
+  if(extra.length){
+    html+='<div style="font-size:12px;font-weight:500;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Plăți înregistrate manual</div>';
+    extra.forEach(p=>{
+      html+='<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--bdr);font-size:13px">'
+        +'<span style="color:var(--text3)">'+p.data+' · '+p.mod+(p.obs?' · '+p.obs:'')+'</span>'
+        +'<span style="color:var(--green);font-weight:500">+'+fmt(p.suma)+' RON</span></div>';
+      if(p.fotos&&p.fotos.length){
+        html+='<div class="foto-grid" style="margin-bottom:6px">';
+        p.fotos.forEach(f=>html+='<img src="'+f+'" class="foto-thumb" onclick="openLB(\''+f+'\')" >');
+        html+='</div>';
+      }
+    });
+  }
+  if(prev){
+    html+='<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)">'
+      +'<div style="font-size:12px;font-weight:500;color:var(--text3);margin-bottom:6px">An precedent '+(prevYear==='2025'?'2024-2025':'2023-2024')+'</div>'
+      +'<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--text3)">Incasat / Total</span><span style="color:'+(prev.rest>0?'var(--red)':'var(--green)')+';font-weight:500">'+fmt(prev.incasat)+' / '+fmt(prev.totalPlata)+' RON '+(prev.rest>0?'(rest '+fmt(prev.rest)+' RON)':'✓')+'</span></div>'
+      +'</div>';
+  }
+  document.getElementById('m-fisa-body').innerHTML=html;
+  openModal('m-fisa');
+}
+function printFisa(){
+  const body=document.getElementById('m-fisa-body');
+  const area=document.getElementById('print-area');
+  area.innerHTML='<div style="font-family:Crimson Pro,serif;font-size:20px;font-weight:600;text-align:center;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #C9A84C">Fișă Membru — RLM Gheorghe Ioanovici 2055 SM</div>'+body.innerHTML;
+  area.querySelectorAll('button').forEach(b=>b.remove());
+  window.print();
+  setTimeout(()=>area.innerHTML='',1000);
+}
+
+// ============================================================
+// INCASARE
+// ============================================================
+function fillMemSelect(selId, yearId){
+  const sel=document.getElementById(selId);
+  sel.innerHTML='<option value="">— alege membrul —</option>';
+  // Always show all 3 years, grouped clearly
+  ['2026','2025','2024'].forEach(y=>{
+    const mems=getMems(y).filter(m=>m.totalPlata>0&&m.mmh);
+    if(mems.length){
+      const g=document.createElement('optgroup');
+      g.label=(y==='2026'?'📅 2025-2026':y==='2025'?'📅 2024-2025':'📅 2023-2024');
+      mems.forEach(m=>{
+        const o=document.createElement('option');
+        o.value=m.mmh+'|'+y;
+        const restTxt=m.rest>0?' — rest: '+fmt(m.rest)+' RON':' ✓ achitat';
+        o.text=m.nume+restTxt;
+        if(m.rest<=0) o.style='color:#888';
+        g.appendChild(o);
+      });
+      sel.appendChild(g);
+    }
+  });
+  // Add onchange handler for warning
+  sel.onchange=function(){
+    const v=this.value;if(!v)return;
+    const [mmh,year]=v.split('|');
+    const m=findMem(mmh,year);
+    const warnId=selId.replace('-mem','')+'-warn';
+    const warn=document.getElementById(warnId);
+    if(warn&&m){
+      if(m.rest<=0){
+        warn.innerHTML='<div style="background:#FFF3CD;border:1px solid #E9A400;border-radius:6px;padding:6px 10px;font-size:12px;color:#854F0B;margin-top:4px">⚠️ Acest membru este deja achitat integral pentru '+( year==='2026'?'2025-2026':year==='2025'?'2024-2025':'2023-2024')+'! Verificați dacă ați ales anul corect.</div>';
+      }else{
+        warn.innerHTML='<div style="background:#D8F3DC;border:1px solid #2D6A4F;border-radius:6px;padding:6px 10px;font-size:12px;color:#2D6A4F;margin-top:4px">Rest de plată: <b>'+fmt(m.rest)+' RON</b> din '+fmt(m.totalPlata)+' RON total</div>';
+      }
+    }
+  };
+}
+function openModal_incasare(modalId, selId){
+  document.getElementById(selId).innerHTML='';
+  const fprev=document.getElementById(modalId==='m-incasare'?'mi-fprev':'ni-fprev');
+  if(fprev)fprev.innerHTML='';
+  const fi=document.getElementById(modalId==='m-incasare'?'mi-foto':'ni-foto');
+  if(fi)fi.value='';
+  fillMemSelect(selId,null);
+  const dataEl=document.getElementById(modalId==='m-incasare'?'mi-data':'ni-data');
+  if(dataEl)dataEl.value=today();
+  openModal(modalId);
+}
+let _saving = false; // prevent double-submit
+function saveIncasare(isModal){
+  if(_saving){return}
+  _saving=true;
+  // Disable save buttons
+  document.querySelectorAll('[onclick*="saveNI"],[onclick*="saveMI"]').forEach(b=>{b.disabled=true;b.textContent='Se salvează...'});
+  setTimeout(()=>{
+    try{
+      const pfx=isModal?'mi':'ni';
+      const val=document.getElementById(pfx+'-mem').value;
+      const suma=parseFloat(document.getElementById(pfx+'-suma').value);
+      const dataRaw=document.getElementById(pfx+'-data').value;
+      const mod=document.getElementById(pfx+'-mod').value;
+      const obs=document.getElementById(pfx+'-obs').value;
+      if(!val){alert('Selectează membrul.');return}
+      if(!suma||isNaN(suma)||suma<=0){alert('Introduceți o sumă validă (mai mare ca 0).');return}
+      if(!dataRaw){alert('Selectați data.');return}
+      const [mmh,year]=val.split('|');
+      if(!mmh||!year){alert('Eroare la selecția membrului. Vă rog selectați din nou.');return}
+      const data=iso2dd(dataRaw);
+      const fotos=getFotos(pfx+'-fprev');
+      // Clear form BEFORE modifying state to prevent double-submit
+      document.getElementById(pfx+'-mem').value='';
+      document.getElementById(pfx+'-suma').value='';
+      document.getElementById(pfx+'-fprev').innerHTML='';
+      const fi=document.getElementById(pfx+'-foto');if(fi)fi.value='';
+      const warnEl=document.getElementById(pfx+'-warn');if(warnEl)warnEl.innerHTML='';
+      // Find and update member
+      const mems=getMems(year);
+      const m=mems.find(x=>x.mmh===mmh);
+      if(!m){alert('Membrul nu a fost găsit în baza de date. Vă rog reîncărcați pagina.');return}
+      m.incasat=(m.incasat||0)+suma;
+      m.rest=Math.max(0,m.totalPlata-m.incasat);
+      m.mod=mod;
+      m.data=m.data?(m.data+' / '+data):data;
+      // Record payment
+      const pid=uid();
+      S.payments.push({id:pid,mmh,year,suma,data,mod,obs,fotos});
+      // Auto-sync to casa or banca
+      const modL=(mod||'').toLowerCase();
+      const isCash=modL.includes('cash')||modL.includes('casa')||modL.includes('numerar');
+      const syncDesc='Cotizatie '+(year==='2026'?'2025-2026':year==='2025'?'2024-2025':'2023-2024')+' — '+m.nume;
+      if(isCash){
+        S.casa.push({id:'sync_'+pid,tip:'intrare',parte:m.nume,data,suma,desc:syncDesc,fotos:[],synced:true});
+      }else{
+        S.ron.push({id:'sync_'+pid,tip:'intrare',parte:m.nume,data,suma,desc:syncDesc+' ('+mod+')',synced:true});
+      }
+      const nr=S.chitNr++;
+      saveState();
+      // Show chitanta
+      const chtml=buildChitanta(nr,m,suma,data,mod,year,obs);
+      if(isModal){
+        closeModal('m-incasare');
+        document.getElementById('m-chitanta-body').innerHTML=chtml;
+        openModal('m-chitanta');
+      }else{
+        document.getElementById('ni-chitanta').innerHTML=chtml;
+      }
+      renderCot();renderCotMetrics();
+    }finally{
+      _saving=false;
+      document.querySelectorAll('[onclick*="saveNI"],[onclick*="saveMI"]').forEach(b=>{b.disabled=false;b.textContent=b.textContent.replace('Se salvează...','Salvează & chitanță')});
+    }
+  },50);
+}
+function saveNI(){saveIncasare(false)}
+function saveMI(){saveIncasare(true)}
+function buildChitanta(nr,m,suma,data,mod,year,obs){
+  const sold=Math.max(0,m.totalPlata-m.incasat);
+  const anLabel=year==='2026'?'2025-2026':year==='2025'?'2024-2025':'2023-2024';
+  return '<div class="chitanta-wrap">'
+    +'<div class="ch-title">CHITANȚĂ Nr. '+nr+'</div>'
+    +'<div class="ch-sub">RLM Gheorghe Ioanovici 2055 SM · Mark Masonry · Satu Mare</div>'
+    +'<div class="ch-row"><span class="ch-lbl">De la</span><span class="ch-val">'+m.nume+'</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">MMH</span><span class="ch-val">'+(m.mmh||'—')+'</span></div>'
+    +'<div class="ch-row" style="border-top:1px solid var(--bdr2);margin-top:4px"><span class="ch-lbl" style="font-size:14px">Suma achitată</span><span class="ch-val" style="font-size:18px;color:var(--green)">+'+fmt(suma)+' RON</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">Data</span><span class="ch-val">'+data+'</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">Mod plată</span><span class="ch-val">'+mod+'</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">An cotizație</span><span class="ch-val">'+anLabel+'</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">Total cotizație</span><span class="ch-val">'+fmt(m.totalPlata)+' RON</span></div>'
+    +'<div class="ch-row"><span class="ch-lbl">Total încasat</span><span class="ch-val">'+fmt(m.incasat)+' RON</span></div>'
+    +'<div class="ch-row" style="border-top:2px solid var(--gold-l);margin-top:4px"><span class="ch-lbl" style="font-weight:600">Sold rămas</span><span class="ch-val" style="color:'+(sold>0?'var(--red)':'var(--green)')+';font-weight:600">'+(sold>0?fmt(sold)+' RON':'Achitat integral ✓')+'</span></div>'
+    +(obs?'<div class="ch-row"><span class="ch-lbl">Observații</span><span class="ch-val">'+obs+'</span></div>':'')
+    +'<div class="ch-sig">Casier: Suciu Gyorfi Nicolae (Miki) · '+new Date().toLocaleDateString('ro-RO')+'</div>'
+    +'</div>';
+}
+function printChitanta(){
+  const body=document.getElementById('m-chitanta-body');
+  const area=document.getElementById('print-area');
+  area.innerHTML=body.innerHTML;
+  area.querySelectorAll('button').forEach(b=>b.remove());
+  window.print();
+  setTimeout(()=>area.innerHTML='',1000);
+}
+
+// ============================================================
+// CASA
+// ============================================================
+function calcSold(arr){return arr.reduce((s,r)=>r.tip==='intrare'?s+r.suma:s-r.suma,0)}
+function filterByMonth(arr,luna){
+  if(!luna)return arr;
+  return arr.filter(r=>{
+    if(!r.data)return false;
+    const p=r.data.split('.');
+    if(p.length<3)return false;
+    return p[2]+'-'+p[1]===luna;
+  });
+}
+function renderCasa(){
+  const q=(document.getElementById('casa-q').value||'').toLowerCase();
+  const tip=document.getElementById('casa-tip').value;
+  const luna=document.getElementById('casa-luna').value;
+  let arr=sortByDate(S.casa);
+  if(luna)arr=filterByMonth(arr,luna);
+  if(tip!=='all')arr=arr.filter(r=>r.tip===tip);
+  if(q)arr=arr.filter(r=>(r.parte||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
+  const allArr=S.casa;
+  const ti=allArr.filter(r=>r.tip==='intrare').reduce((s,r)=>s+r.suma,0);
+  const te=allArr.filter(r=>r.tip==='iesire').reduce((s,r)=>s+r.suma,0);
+  const sold=ti-te;
+  document.getElementById('casa-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total intrări</div><div class="metric-val g">${fmt(ti)} RON</div></div>
+    <div class="metric"><div class="metric-label">Total ieșiri</div><div class="metric-val r">${fmt(te)} RON</div></div>
+    <div class="metric"><div class="metric-label">Sold curent</div><div class="metric-val ${sold>=0?'g':'r'}">${fmt(sold)} RON</div></div>`;
+  document.getElementById('casa-sold').innerHTML='<span style="color:'+(sold>=0?'var(--green)':'var(--red)')+'">Sold: '+fmt(sold)+' RON</span>';
+  const tbody=document.getElementById('casa-tbody');
+  tbody.innerHTML=arr.map(r=>{
+    const fotos=(r.fotos||[]).map(f=>'<img src="'+f+'" class="foto-thumb" onclick="openLB(\''+f+'\')">').join('');
+    return '<tr>'
+      +'<td><span class="badge '+(r.tip==='intrare'?'bg-green':'bg-red')+'">'+(r.tip==='intrare'?'▲ Intrare':'▼ Ieșire')+'</span></td>'
+      +'<td><b>'+(r.parte||'—')+'</b></td>'
+      +'<td style="font-size:12px">'+(r.data||'—')+'</td>'
+      +'<td style="font-weight:500;color:'+(r.tip==='intrare'?'var(--green)':'var(--red)')+'">'+( r.tip==='intrare'?'+':'−')+fmt(r.suma)+' RON</td>'
+      +'<td style="font-size:12px">'+(r.desc||'—')+'</td>'
+      +'<td>'+(fotos||'—')+'</td>'
+      +'<td class="td-actions">'
+      +'<button class="btn btn-outline btn-xs" onclick="editRecord(\'casa\',\''+r.id+'\')">✎</button>'
+      +'<button class="btn btn-outline btn-xs" style="color:var(--red)" onclick="delRecord(\'casa\',\''+r.id+'\')">✕</button>'
+      +'</td></tr>';
+  }).join('')||'<tr><td colspan="7" class="empty"><div>Nicio înregistrare</div></td></tr>';
+}
+function populateCasaRapid(){
+  const sel=document.getElementById('casa-rapid');
+  sel.innerHTML='<option value="">— alege din listă —</option>';
+  const mg=document.createElement('optgroup');mg.label='Membri 2025-2026';
+  S.m2026.forEach(m=>{const o=document.createElement('option');o.value='M:'+m.mmh;o.text=m.nume;mg.appendChild(o)});
+  sel.appendChild(mg);
+  const fg=document.createElement('optgroup');fg.label='Furnizori';
+  S.furnizori.forEach(f=>{const o=document.createElement('option');o.value='F:'+f.id;o.text=f.nume;fg.appendChild(o)});
+  sel.appendChild(fg);
+}
+function populateRonRapid(){
+  const sel=document.getElementById('ron-rapid');
+  sel.innerHTML='<option value="">— alege din listă —</option>';
+  const mg=document.createElement('optgroup');mg.label='Membri 2025-2026';
+  S.m2026.forEach(m=>{const o=document.createElement('option');o.value='M:'+m.mmh;o.text=m.nume;mg.appendChild(o)});
+  sel.appendChild(mg);
+  const fg=document.createElement('optgroup');fg.label='Furnizori';
+  S.furnizori.forEach(f=>{const o=document.createElement('option');o.value='F:'+f.id;o.text=f.nume;fg.appendChild(o)});
+  sel.appendChild(fg);
+}
+function applyRapid(type){
+  const sel=document.getElementById(type+'-rapid');
+  const val=sel.value;if(!val)return;
+  const [kind,id]=val.split(':');
+  let parte='',desc='';
+  if(kind==='M'){const m=S.m2026.find(x=>x.mmh===id);if(m){parte=m.nume;desc='Cotizatie 2025-2026'}}
+  else if(kind==='F'){const f=S.furnizori.find(x=>x.id===id);if(f){parte=f.nume;desc=f.ref||''}}
+  document.getElementById(type+'-eparte').value=parte;
+  document.getElementById(type+'-edesc').value=desc;
+}
+function openCasaModal(id){
+  editingId=id||null;
+  const isEdit=!!id;
+  document.getElementById('m-casa-title').textContent=isEdit?'Editează înregistrare':'Înregistrare casă';
+  populateCasaRapid();
+  document.getElementById('casa-rapid').value='';
+  document.getElementById('casa-efprev').innerHTML='';
+  document.getElementById('casa-efoto').value='';
+  if(isEdit){
+    const r=S.casa.find(x=>x.id===id);if(!r)return;
+    document.getElementById('casa-etip').value=r.tip;
+    document.getElementById('casa-edata').value=dd2iso(r.data);
+    document.getElementById('casa-eparte').value=r.parte||'';
+    document.getElementById('casa-esuma').value=r.suma;
+    document.getElementById('casa-edesc').value=r.desc||'';
+    const fp=document.getElementById('casa-efprev');
+    (r.fotos||[]).forEach(f=>{const img=document.createElement('img');img.src=f;img.className='foto-thumb';img.onclick=()=>openLB(f);fp.appendChild(img)});
+    document.getElementById('casa-efoot').innerHTML='<button class="btn btn-red btn-sm" style="margin-right:auto" onclick="delRecord(\'casa\',\''+id+'\');closeModal(\'m-casa\')">🗑 Șterge</button><button class="btn btn-outline" onclick="closeModal(\'m-casa\')">Anulează</button><button class="btn btn-gold" onclick="saveCasa()">Salvează</button>';
+  }else{
+    document.getElementById('casa-etip').value='intrare';
+    document.getElementById('casa-edata').value=today();
+    document.getElementById('casa-eparte').value='';
+    document.getElementById('casa-esuma').value='';
+    document.getElementById('casa-edesc').value='';
+    document.getElementById('casa-efoot').innerHTML='<button class="btn btn-outline" onclick="closeModal(\'m-casa\')">Anulează</button><button class="btn btn-gold" onclick="saveCasa()">Salvează</button>';
+  }
+  openModal('m-casa');
+}
+function saveCasa(){
+  const tip=document.getElementById('casa-etip').value;
+  const data=iso2dd(document.getElementById('casa-edata').value);
+  const parte=document.getElementById('casa-eparte').value.trim();
+  const suma=parseFloat(document.getElementById('casa-esuma').value);
+  const desc=document.getElementById('casa-edesc').value.trim();
+  if(!parte){alert('Completează Platitor / Beneficiar.');return}
+  if(!suma||isNaN(suma)){alert('Completează suma.');return}
+  if(!data){alert('Completează data.');return}
+  const fotos=getFotos('casa-efprev');
+  if(editingId){
+    const idx=S.casa.findIndex(r=>r.id===editingId);
+    if(idx>=0)S.casa[idx]={...S.casa[idx],tip,data,parte,suma,desc,fotos};
+  }else{
+    S.casa.push({id:uid(),tip,data,parte,suma,desc,fotos});
+  }
+  saveState();closeModal('m-casa');editingId=null;renderCasa();
+}
+
+// ============================================================
+// RON / GBP
+// ============================================================
+function renderRON(){
+  const q=(document.getElementById('ron-q').value||'').toLowerCase();
+  const luna=document.getElementById('ron-luna').value;
+  let arr=sortByDate(S.ron);
+  if(luna)arr=filterByMonth(arr,luna);
+  if(q)arr=arr.filter(r=>(r.parte||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
+  const ti=S.ron.filter(r=>r.tip==='intrare').reduce((s,r)=>s+r.suma,0);
+  const te=S.ron.filter(r=>r.tip==='iesire').reduce((s,r)=>s+r.suma,0);
+  const sold=ti-te;
+  document.getElementById('ron-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total credite</div><div class="metric-val g">${fmt(ti)} RON</div></div>
+    <div class="metric"><div class="metric-label">Total debite</div><div class="metric-val r">${fmt(te)} RON</div></div>
+    <div class="metric"><div class="metric-label">Sold cont RON</div><div class="metric-val ${sold>=0?'g':'r'}">${fmt(sold)} RON</div></div>`;
+  document.getElementById('ron-sold').innerHTML='<span style="color:'+(sold>=0?'var(--green)':'var(--red)')+'">Sold: '+fmt(sold)+' RON</span>';
+  document.getElementById('ron-tbody').innerHTML=arr.map(r=>
+    '<tr>'
+    +'<td><span class="badge '+(r.tip==='intrare'?'bg-green':'bg-red')+'">'+(r.tip==='intrare'?'▲ Credit':'▼ Debit')+'</span></td>'
+    +'<td><b>'+(r.parte||'—')+'</b></td>'
+    +'<td style="font-size:12px">'+(r.data||'—')+'</td>'
+    +'<td style="font-weight:500;color:'+(r.tip==='intrare'?'var(--green)':'var(--red)')+'">'+( r.tip==='intrare'?'+':'−')+fmt(r.suma)+' RON</td>'
+    +'<td style="font-size:12px">'+(r.desc||'—')+'</td>'
+    +'<td class="td-actions"><button class="btn btn-outline btn-xs" onclick="editRecord(\'ron\',\''+r.id+'\')">✎</button><button class="btn btn-outline btn-xs" style="color:var(--red)" onclick="delRecord(\'ron\',\''+r.id+'\')">✕</button></td>'
+    +'</tr>'
+  ).join('')||'<tr><td colspan="6" class="empty"><div>Nicio tranzacție</div></td></tr>';
+}
+function renderGBP(){
+  const q=(document.getElementById('gbp-q').value||'').toLowerCase();
+  const luna=document.getElementById('gbp-luna').value;
+  let arr=sortByDate(S.gbp);
+  if(luna)arr=filterByMonth(arr,luna);
+  if(q)arr=arr.filter(r=>(r.parte||'').toLowerCase().includes(q)||(r.desc||'').toLowerCase().includes(q));
+  const ti=S.gbp.filter(r=>r.tip==='intrare').reduce((s,r)=>s+r.suma,0);
+  const te=S.gbp.filter(r=>r.tip==='iesire').reduce((s,r)=>s+r.suma,0);
+  const sold=ti-te;
+  document.getElementById('gbp-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total credite</div><div class="metric-val g">${fmtGBP(ti)} GBP</div></div>
+    <div class="metric"><div class="metric-label">Total debite</div><div class="metric-val r">${fmtGBP(te)} GBP</div></div>
+    <div class="metric"><div class="metric-label">Sold cont GBP</div><div class="metric-val ${sold>=0?'g':'r'}">${fmtGBP(sold)} GBP</div></div>`;
+  document.getElementById('gbp-sold').innerHTML='<span style="color:'+(sold>=0?'var(--green)':'var(--red)')+'">Sold: '+fmtGBP(sold)+' GBP</span>';
+  document.getElementById('gbp-tbody').innerHTML=arr.map(r=>
+    '<tr>'
+    +'<td><span class="badge '+(r.tip==='intrare'?'bg-green':'bg-red')+'">'+(r.tip==='intrare'?'▲ Credit':'▼ Debit')+'</span></td>'
+    +'<td><b>'+(r.parte||'—')+'</b></td>'
+    +'<td style="font-size:12px">'+(r.data||'—')+'</td>'
+    +'<td style="font-weight:500;color:'+(r.tip==='intrare'?'var(--green)':'var(--red)')+'">'+( r.tip==='intrare'?'+':'−')+fmtGBP(r.suma)+' GBP</td>'
+    +'<td style="font-size:12px">'+(r.desc||'—')+'</td>'
+    +'<td class="td-actions"><button class="btn btn-outline btn-xs" onclick="editRecord(\'gbp\',\''+r.id+'\')">✎</button><button class="btn btn-outline btn-xs" style="color:var(--red)" onclick="delRecord(\'gbp\',\''+r.id+'\')">✕</button></td>'
+    +'</tr>'
+  ).join('')||'<tr><td colspan="6" class="empty"><div>Nicio tranzacție</div></td></tr>';
+}
+function openTranzactieModal(type, id){
+  editingId=id||null;
+  const isEdit=!!id;
+  const isGBP=type==='gbp';
+  const arr=type==='casa'?S.casa:type==='ron'?S.ron:S.gbp;
+  document.getElementById('m-'+type+'-title').textContent=isEdit?'Editează tranzacție':'Tranzacție '+(isGBP?'GBP':'RON');
+  if(type==='ron'){populateRonRapid();document.getElementById('ron-rapid').value='';}
+  if(isEdit){
+    const r=arr.find(x=>x.id===id);if(!r)return;
+    document.getElementById(type+'-etip').value=r.tip;
+    document.getElementById(type+'-edata').value=dd2iso(r.data);
+    document.getElementById(type+'-eparte').value=r.parte||'';
+    document.getElementById(type+'-esuma').value=r.suma;
+    document.getElementById(type+'-edesc').value=r.desc||'';
+    document.getElementById(type+'-efoot').innerHTML='<button class="btn btn-red btn-sm" style="margin-right:auto" onclick="delRecord(\''+type+'\',\''+id+'\');closeModal(\'m-'+type+'\')">🗑 Șterge</button><button class="btn btn-outline" onclick="closeModal(\'m-'+type+'\')">Anulează</button><button class="btn btn-gold" onclick="saveTranzactie(\''+type+'\')">Salvează</button>';
+  }else{
+    document.getElementById(type+'-etip').value='intrare';
+    document.getElementById(type+'-edata').value=today();
+    document.getElementById(type+'-eparte').value='';
+    document.getElementById(type+'-esuma').value='';
+    document.getElementById(type+'-edesc').value='';
+    document.getElementById(type+'-efoot').innerHTML='<button class="btn btn-outline" onclick="closeModal(\'m-'+type+'\')">Anulează</button><button class="btn btn-gold" onclick="saveTranzactie(\''+type+'\')">Salvează</button>';
+  }
+  openModal('m-'+type);
+}
+function saveTranzactie(type){
+  const tip=document.getElementById(type+'-etip').value;
+  const data=iso2dd(document.getElementById(type+'-edata').value);
+  const parte=document.getElementById(type+'-eparte').value.trim();
+  const suma=parseFloat(document.getElementById(type+'-esuma').value);
+  const desc=document.getElementById(type+'-edesc').value.trim();
+  if(!parte){alert('Completează Platitor / Beneficiar.');return}
+  if(!suma||isNaN(suma)){alert('Completează suma.');return}
+  if(!data){alert('Completează data.');return}
+  const arr=type==='ron'?S.ron:S.gbp;
+  if(editingId){
+    const idx=arr.findIndex(r=>r.id===editingId);
+    if(idx>=0)arr[idx]={...arr[idx],tip,data,parte,suma,desc};
+  }else{
+    arr.push({id:uid(),tip,data,parte,suma,desc});
+  }
+  saveState();closeModal('m-'+type);editingId=null;
+  if(type==='ron')renderRON();else renderGBP();
+}
+
+// ============================================================
+// EDIT / DELETE RECORDS
+// ============================================================
+function editRecord(type,id){
+  if(type==='casa')openCasaModal(id);
+  else openTranzactieModal(type,id);
+}
+function delRecord(type,id){
+  if(!confirm('Ștergi această înregistrare?'))return;
+  if(type==='casa')S.casa=S.casa.filter(r=>r.id!==id);
+  else if(type==='ron')S.ron=S.ron.filter(r=>r.id!==id);
+  else if(type==='gbp')S.gbp=S.gbp.filter(r=>r.id!==id);
+  saveState();
+  if(type==='casa')renderCasa();
+  else if(type==='ron')renderRON();
+  else renderGBP();
+}
+
+// ============================================================
+// OBLIGATII
+// ============================================================
+function getOblPaid(id){return(S.oblPayments||[]).filter(p=>p.oblId===id).reduce((s,p)=>s+p.suma,0)}
+function renderObl(){
+  const now=new Date();
+  let alertsHtml='';
+  OBLIGATIONS.forEach(o=>{
+    const paid=getOblPaid(o.id);
+    const total=o.nrM*o.ppm;
+    const rest=Math.max(0,total-paid);
+    const [d,m,y]=o.termen.split('.');
+    const td=new Date(y,m-1,d);
+    const diff=Math.ceil((td-now)/(1000*60*60*24));
+    if(rest>0&&diff<=30&&diff>=0){
+      alertsHtml+='<div style="background:var(--abg);border:1px solid #E9A400;border-radius:var(--r);padding:10px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center">'
+        +'<span style="font-size:18px">⚠️</span>'
+        +'<div><div style="font-weight:500;font-size:13px">'+o.titlu+' — termen '+o.termen+' (în '+diff+' zile)</div>'
+        +'<div style="font-size:12px;color:var(--amber)">Rest: <b>'+(o.moneda==='GBP'?'£'+rest.toFixed(2):fmt(rest)+' RON')+'</b> · IBAN: '+o.iban+'</div></div>'
+        +'</div>';
+    }
+  });
+  document.getElementById('obl-alerts').innerHTML=alertsHtml;
+  document.getElementById('obl-cards').innerHTML=OBLIGATIONS.map(o=>{
+    const paid=getOblPaid(o.id);
+    const total=o.nrM*o.ppm;
+    const rest=Math.max(0,total-paid);
+    const pct=total>0?Math.round(paid/total*100):0;
+    const isGBP=o.moneda==='GBP';
+    const fv=v=>isGBP?'£'+v.toFixed(2):fmt(v)+' RON';
+    const [d,m,y]=o.termen.split('.');
+    const td=new Date(y,m-1,d);
+    const diff=Math.ceil((td-now)/(1000*60*60*24));
+    const tc=diff<0?'var(--red)':diff<=30?'var(--amber)':'var(--green)';
+    const pays=(S.oblPayments||[]).filter(p=>p.oblId===o.id);
+    let paysHtml=pays.length?pays.map(p=>'<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px dotted var(--bdr)"><span style="color:var(--text3)">'+p.data+' · '+p.mod+'</span><span style="color:var(--green);font-weight:500">'+fv(p.suma)+'</span></div>').join(''):'<div style="font-size:12px;color:var(--text3)">Nicio plată înregistrată</div>';
+    return '<div class="card">'
+      +'<div class="card-hdr" style="background:'+(rest>0?'var(--abg)':'var(--gbg)')+'">'
+      +'<span class="card-title" style="color:'+(rest>0?'var(--amber)':'var(--green)')+'">'+o.titlu+'</span>'
+      +'<span style="font-size:12px;color:'+tc+'">⏱ '+o.termen+(diff<0?' (EXPIRAT)':diff<=30?' ('+diff+' zile)':'')+'</span>'
+      +'</div>'
+      +'<div class="card-body">'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">'
+      +'<div style="background:var(--bg2);border-radius:8px;padding:8px 10px"><div style="font-size:11px;color:var(--text3)">Total</div><div style="font-size:14px;font-weight:500">'+fv(total)+'</div></div>'
+      +'<div style="background:var(--bg2);border-radius:8px;padding:8px 10px"><div style="font-size:11px;color:var(--text3)">Achitat</div><div style="font-size:14px;font-weight:500;color:var(--green)">'+fv(paid)+'</div></div>'
+      +'<div style="background:var(--bg2);border-radius:8px;padding:8px 10px"><div style="font-size:11px;color:var(--text3)">Rest</div><div style="font-size:14px;font-weight:500;color:'+(rest>0?'var(--red)':'var(--green)')+'">'+( rest>0?fv(rest):'Achitat ✓')+'</div></div>'
+      +'</div>'
+      +'<div style="height:8px;background:var(--bg3);border-radius:4px;margin-bottom:10px;overflow:hidden"><div style="height:100%;width:'+Math.min(pct,100)+'%;background:'+(pct>=100?'var(--green)':'#E9A400')+';border-radius:4px"></div></div>'
+      +'<div style="font-size:12px;color:var(--text3);margin-bottom:4px">'+o.nrM+' membri × '+(isGBP?'£':'')+o.ppm+(isGBP?' GBP':' RON')+' · '+o.period+'</div>'
+      +'<div style="font-size:12px;font-weight:500;margin-bottom:2px">IBAN: <span style="font-family:monospace;color:var(--gold)">'+o.iban+'</span></div>'
+      +'<div style="font-size:12px;color:var(--text3);margin-bottom:10px">Referință: <b>'+o.ref+'</b></div>'
+      +'<details><summary style="font-size:12px;cursor:pointer;color:var(--text2)">Istoric plăți ('+pays.length+')</summary><div style="margin-top:8px">'+paysHtml+'</div></details>'
+      +'<button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="openOblModal(\''+o.id+'\')">+ Înregistrează plată</button>'
+      +'</div></div>';
+  }).join('');
+}
+function openOblModal(id){
+  const o=OBLIGATIONS.find(x=>x.id===id);if(!o)return;
+  document.getElementById('m-obl-title').textContent='Plată: '+o.titlu;
+  document.getElementById('obl-eid').value=id;
+  document.getElementById('obl-hint').textContent='IBAN: '+o.iban+' · Ref: '+o.ref+' · Monedă: '+o.moneda;
+  document.getElementById('obl-edata').value=today();
+  document.getElementById('obl-esuma').value='';
+  document.getElementById('obl-eobs').value='';
+  openModal('m-obl');
+}
+function saveObl(){
+  const id=document.getElementById('obl-eid').value;
+  const suma=parseFloat(document.getElementById('obl-esuma').value);
+  const data=iso2dd(document.getElementById('obl-edata').value);
+  const mod=document.getElementById('obl-emod').value;
+  const obs=document.getElementById('obl-eobs').value;
+  const o=OBLIGATIONS.find(x=>x.id===id);
+  if(!suma||isNaN(suma)){alert('Completează suma.');return}
+  if(!data){alert('Completează data.');return}
+  if(!S.oblPayments)S.oblPayments=[];
+  S.oblPayments.push({id:uid(),oblId:id,suma,data,mod,obs,moneda:o?o.moneda:'RON'});
+  saveState();closeModal('m-obl');renderObl();
+}
+
+// ============================================================
+// FURNIZORI
+// ============================================================
+function renderFurn(){
+  document.getElementById('furn-tbody').innerHTML=(S.furnizori||[]).map(f=>
+    '<tr><td><b>'+f.nume+'</b></td>'
+    +'<td style="font-size:12px;font-family:monospace">'+(f.iban||'—')+'</td>'
+    +'<td style="font-size:12px">'+(f.banca||'—')+'</td>'
+    +'<td style="font-size:12px">'+(f.cui||'—')+'</td>'
+    +'<td style="font-size:12px;color:var(--text3)">'+(f.ref||'—')+'</td>'
+    +'<td class="td-actions"><button class="btn btn-outline btn-xs" onclick="openFurnizorModal(\''+f.id+'\')">✎</button><button class="btn btn-outline btn-xs" style="color:var(--red)" onclick="delFurnizor(\''+f.id+'\')">✕</button></td></tr>'
+  ).join('')||'<tr><td colspan="6" class="empty"><div>Niciun furnizor</div></td></tr>';
+}
+function openFurnizorModal(id){
+  editingId=id||null;
+  const isEdit=!!id;
+  document.getElementById('m-furn-title').textContent=isEdit?'Editează furnizor':'Furnizor nou';
+  document.getElementById('furn-del-btn').style.display=isEdit?'inline-flex':'none';
+  document.getElementById('furn-eid').value=id||'';
+  if(isEdit){
+    const f=S.furnizori.find(x=>x.id===id);if(!f)return;
+    document.getElementById('furn-enume').value=f.nume||'';
+    document.getElementById('furn-eiban').value=f.iban||'';
+    document.getElementById('furn-ebanca').value=f.banca||'';
+    document.getElementById('furn-ecui').value=f.cui||'';
+    document.getElementById('furn-eref').value=f.ref||'';
+  }else{
+    ['furn-enume','furn-eiban','furn-ebanca','furn-ecui','furn-eref'].forEach(x=>document.getElementById(x).value='');
+  }
+  openModal('m-furnizor');
+}
+function saveFurnizor(){
+  const f={id:editingId||uid(),nume:document.getElementById('furn-enume').value.trim(),iban:document.getElementById('furn-eiban').value.trim(),banca:document.getElementById('furn-ebanca').value.trim(),cui:document.getElementById('furn-ecui').value.trim(),ref:document.getElementById('furn-eref').value.trim()};
+  if(!f.nume){alert('Completează numele.');return}
+  if(!S.furnizori)S.furnizori=[];
+  const idx=S.furnizori.findIndex(x=>x.id===f.id);
+  if(idx>=0)S.furnizori[idx]=f;else S.furnizori.push(f);
+  saveState();closeModal('m-furnizor');editingId=null;renderFurn();
+}
+function deleteFurnizor(){
+  const id=document.getElementById('furn-eid').value;
+  if(!confirm('Ștergi acest furnizor?'))return;
+  S.furnizori=S.furnizori.filter(x=>x.id!==id);
+  saveState();closeModal('m-furnizor');editingId=null;renderFurn();
+}
+function delFurnizor(id){if(!confirm('Ștergi?'))return;S.furnizori=S.furnizori.filter(x=>x.id!==id);saveState();renderFurn()}
+
+// ============================================================
+// RAPOARTE
+// ============================================================
+function renderRapoarte(){
+  const from=document.getElementById('rap-from').value;
+  const to=document.getElementById('rap-to').value;
+  const m26=S.m2026.filter(m=>m.totalPlata>0);
+  const td=m26.reduce((s,m)=>s+(m.totalPlata||0),0);
+  const ti=m26.reduce((s,m)=>s+(m.incasat||0),0);
+  const tr=m26.reduce((s,m)=>s+(m.rest||0),0);
+  const pct=td>0?Math.round(ti/td*100):0;
+  const soldCasa=calcSold(S.casa);
+  const soldRON=calcSold(S.ron);
+  const soldGBP=calcSold(S.gbp);
+  document.getElementById('rap-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Colectare 2025-2026</div><div class="metric-val gold">${pct}%</div></div>
+    <div class="metric"><div class="metric-label">Total datorat</div><div class="metric-val">${fmt(td)} RON</div></div>
+    <div class="metric"><div class="metric-label">Total încasat</div><div class="metric-val g">${fmt(ti)} RON</div></div>
+    <div class="metric"><div class="metric-label">Necolectat</div><div class="metric-val r">${fmt(tr)} RON</div></div>
+    <div class="metric"><div class="metric-label">Sold casă</div><div class="metric-val ${soldCasa>=0?'g':'r'}">${fmt(soldCasa)} RON</div></div>
+    <div class="metric"><div class="metric-label">Sold bancă RON</div><div class="metric-val ${soldRON>=0?'g':'r'}">${fmt(soldRON)} RON</div></div>`;
+  document.getElementById('rap-prog').innerHTML=m26.map(m=>{
+    const st=status(m);
+    const pc=m.totalPlata>0?Math.round((m.incasat||0)/m.totalPlata*100):0;
+    const fc=st==='paid'?'pf-full':st==='partial'?'pf-part':'pf-none';
+    const sn=m.nume.split(' ').slice(0,2).join(' ');
+    return '<div class="prog-row"><div class="prog-name" title="'+m.nume+'">'+sn+'</div><div class="prog-track"><div class="prog-fill '+fc+'" style="width:'+Math.max(4,st==='unpaid'?4:pc)+'%"></div></div><div class="prog-amt">'+fmt(m.incasat||0)+'/'+fmt(m.totalPlata)+'</div></div>';
+  }).join('');
+  const rest=m26.filter(m=>m.rest>0).sort((a,b)=>b.rest-a.rest);
+  document.getElementById('rap-rest').innerHTML=rest.length?rest.map(m=>
+    '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bdr);font-size:13px">'
+    +'<div><div style="font-weight:500">'+m.nume+'</div><div style="font-size:11px;color:var(--text3)">MMH '+m.mmh+'</div></div>'
+    +'<span style="color:var(--red);font-weight:500">'+fmt(m.rest)+' RON</span></div>'
+  ).join(''):'<div class="empty"><div class="empty-icon">✅</div><div>Toți achitați!</div></div>';
+  document.getElementById('rap-solduri').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Sold casă</div><div style="font-size:16px;font-weight:500;color:${soldCasa>=0?'var(--green)':'var(--red)'}">${fmt(soldCasa)} RON</div></div>
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Sold cont RON</div><div style="font-size:16px;font-weight:500;color:${soldRON>=0?'var(--green)':'var(--red)'}">${fmt(soldRON)} RON</div></div>
+      <div style="background:var(--bg2);border-radius:8px;padding:10px 12px"><div style="font-size:11px;color:var(--text3)">Sold cont GBP</div><div style="font-size:16px;font-weight:500;color:${soldGBP>=0?'var(--green)':'var(--red)'}">${fmtGBP(soldGBP)} GBP</div></div>
+    </div>`;
+}
+
+// ============================================================
+// FOTO
+// ============================================================
+function addFotos(event,prevId){
+  const files=Array.from(event.target.files);
+  const prev=document.getElementById(prevId);
+  files.forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const img=document.createElement('img');
+      img.src=e.target.result;img.className='foto-thumb';
+      img.onclick=()=>openLB(e.target.result);
+      prev.appendChild(img);
+    };
+    r.readAsDataURL(f);
+  });
+  event.target.value='';
+}
+function getFotos(prevId){return Array.from(document.getElementById(prevId).querySelectorAll('img')).map(i=>i.src)}
+function openLB(src){document.getElementById('lb-img').src=src;document.getElementById('lb').classList.add('open')}
+function closeLB(){document.getElementById('lb').classList.remove('open')}
+
+// ============================================================
+// EXPORT / IMPORT / RESET / PRINT
+// ============================================================
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='RLM_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();
+}
+function importJSON(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!confirm('Suprascriem datele curente?'))return;
+      S=d;saveState();location.reload();
+    }catch(err){alert('Fișier JSON invalid.')}
+  };
+  r.readAsText(f);
+}
+function resetData(){
+  if(!confirm('Resetezi la datele inițiale?\n\nTIPURILE DE MEMBRI (Principal/Secundar) se PĂSTREAZĂ.\nPlățile noi înregistrate se vor pierde.'))return;
+  localStorage.removeItem('rlm_data');localStorage.removeItem('rlm_ver');
+  location.reload();
+}
+function exportCSV(type){
+  let rows,name;
+  if(type==='casa'){
+    rows=[['Tip','Platitor/Beneficiar','Data','Suma RON','Descriere']];
+    sortByDate(S.casa).forEach(r=>rows.push([r.tip==='intrare'?'Intrare':'Iesire',r.parte,r.data,r.suma,r.desc]));
+    rows.push(['','','Sold',calcSold(S.casa),'']);
+    name='registru_casa_RLM.csv';
+  }else if(type==='ron'){
+    rows=[['Tip','Platitor/Beneficiar','Data','Suma RON','Descriere']];
+    sortByDate(S.ron).forEach(r=>rows.push([r.tip==='intrare'?'Credit':'Debit',r.parte,r.data,r.suma,r.desc]));
+    rows.push(['','','Sold',calcSold(S.ron),'']);
+    name='jurnal_banca_RON_RLM.csv';
+  }else{
+    rows=[['Tip','Platitor/Beneficiar','Data','Suma GBP','Descriere']];
+    sortByDate(S.gbp).forEach(r=>rows.push([r.tip==='intrare'?'Credit':'Debit',r.parte,r.data,r.suma,r.desc]));
+    rows.push(['','','Sold',calcSold(S.gbp),'']);
+    name='jurnal_banca_GBP_RLM.csv';
+  }
+  const csv=rows.map(r=>r.map(v=>'"'+(String(v||'').replace(/"/g,'""'))+'"').join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
+}
+function printTable(type){
+  let html='<div style="font-family:Crimson Pro,serif;font-size:18px;font-weight:600;margin-bottom:12px">RLM Gheorghe Ioanovici 2055 SM</div>';
+  const area=document.getElementById('print-area');
+  if(type==='rap'){
+    area.innerHTML=html+document.getElementById('p-rapoarte').innerHTML;
+    area.querySelectorAll('button,input,.filter-row').forEach(b=>b.remove());
+  }else{
+    const tableEl=document.querySelector('#p-'+type+' table');
+    if(tableEl)area.innerHTML=html+(tableEl.outerHTML||'');
+    else area.innerHTML=html+'<p>Nicio tabelă găsită</p>';
+  }
+  window.print();setTimeout(()=>area.innerHTML='',1000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('mi-foto').addEventListener('change',e=>addFotos(e,'mi-fprev'));
+document.getElementById('mi-mem').addEventListener('focus',()=>fillMemSelect('mi-mem',null));
+document.getElementById('m-incasare').addEventListener('click',function(e){
+  if(e.target===this){closeModal('m-incasare')}
+});
+
+// Wire up modal open buttons
+document.getElementById('m-casa').querySelector('.modal-close').addEventListener('click',()=>{editingId=null});
+document.querySelector('[onclick="openModal(\'m-casa\')"]').onclick=()=>openCasaModal(null);
+document.querySelector('[onclick="openModal(\'m-ron\')"]').onclick=()=>openTranzactieModal('ron',null);
+document.querySelector('[onclick="openModal(\'m-gbp\')"]').onclick=()=>openTranzactieModal('gbp',null);
+document.querySelector('[onclick="openModal(\'m-incasare\')"]').onclick=()=>{
+  document.getElementById('mi-fprev').innerHTML='';
+  fillMemSelect('mi-mem',null);
+  document.getElementById('mi-data').value=today();
+  openModal('m-incasare');
+};
+fillMemSelect('ni-mem',null);
+document.getElementById('ni-data').value=today();
+document.getElementById('rap-from').value=new Date(new Date().getFullYear()-1,8,1).toISOString().split('T')[0];
+document.getElementById('rap-to').value=today();
+renderCotMetrics();renderCot();
+</script>
+</body>
+</html>
