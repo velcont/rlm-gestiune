@@ -655,12 +655,12 @@ textarea.fi2{min-height:60px;resize:vertical}
 // ============================================================
 // DATA VERSION & STORAGE
 // ============================================================
-const VER = '3.0.0';
+const VER = '3.1.0';
 
 // Tip overrides stored PERMANENTLY, separate from main data
 function getTips(){try{return JSON.parse(localStorage.getItem('rlm_tips')||'{}')}catch(e){return{}}}
 function setTip(mmh,tip){const t=getTips();t[mmh]=tip;localStorage.setItem('rlm_tips',JSON.stringify(t))}
-function applyTips(arr){const t=getTips();return arr.map(m=>{const tip=t[m.mmh]||m.tip||'principal';const total=tip==='secundar'?350:650;return{...m,tip,totalPlata:total,rest:Math.max(0,total-(m.incasat||0))}})}
+function applyTips(arr){const t=getTips();return arr.map(m=>{if(m.scutit)return{...m,totalPlata:0,rest:0,incasat:0};const tip=t[m.mmh]||m.tip||'principal';const total=tip==='secundar'?350:650;return{...m,tip,totalPlata:total,rest:Math.max(0,total-(m.incasat||0))}})}
 
 function saveState(){localStorage.setItem('rlm_data',JSON.stringify(S))}
 function loadState(){
@@ -698,7 +698,7 @@ const M2026=[
   {nr:1,mmh:'1263833',nume:'BOTA Cosmin Gheorghe',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:2,mmh:'1263834',nume:'BUNOIU Flavius Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:3,mmh:'1260241',nume:'CARPINEANU Cristian',totalPlata:350,incasat:300,rest:50,mod:'Cash',data:'13.12.2025',tip:'secundar'},
-  {nr:4,mmh:'1272212',nume:'COVACI Cristian Dumitru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:4,mmh:'1272212',nume:'COVACI Cristian Dumitru',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:5,mmh:'1268186',nume:'DEMIAN Radu Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:6,mmh:'1269556',nume:'DERBAN Adrian Traian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:7,mmh:'1256434',nume:'DUMITRAS Daniel George Sebastian',totalPlata:650,incasat:350,rest:300,mod:'Banca',data:'23.01.2026',tip:'principal'},
@@ -715,20 +715,20 @@ const M2026=[
   {nr:18,mmh:'1263840',nume:'LASZLO Robert Istvan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:19,mmh:'1264529',nume:'LAZARESCU Dorin Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:20,mmh:'1270483',nume:'LAZARESCU Victor Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:21,mmh:'1272209',nume:'LEVAI Andrei',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:21,mmh:'1272209',nume:'LEVAI Andrei',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:22,mmh:'1267041',nume:'MANG Ioan Alexandru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:23,mmh:'1272206',nume:'MINTAS Ioan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:23,mmh:'1272206',nume:'MINTAS Ioan',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:24,mmh:'1269558',nume:'NEGRUTIU Lucian Dan',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:25,mmh:'1272207',nume:'NICA Gabriel Mircea',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:25,mmh:'1272207',nume:'NICA Gabriel Mircea',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:26,mmh:'1268184',nume:'PALAGHIANU Daniel Cristian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:27,mmh:'1269557',nume:'PASCA Cristian Vasile',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:28,mmh:'1264530',nume:'PAVEL Emilian',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:29,mmh:'1272205',nume:'PIT Ovidiu Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:29,mmh:'1272205',nume:'PIT Ovidiu Mihai',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:30,mmh:'1265206',nume:'POPA Casian Cosmin',totalPlata:350,incasat:150,rest:200,mod:'Banca',data:'14.01.2026',tip:'secundar'},
   {nr:31,mmh:'1265208',nume:'PURDEA Gavril Vasile',totalPlata:650,incasat:600,rest:50,mod:'Banca',data:'18.02.2026',tip:'principal'},
   {nr:32,mmh:'1263758',nume:'ROSCA PELAU Marius',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:33,mmh:'1263841',nume:'SEUCEA Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:34,mmh:'1272208',nume:'SLAVESCU Dan Alexandru',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:34,mmh:'1272208',nume:'SLAVESCU Dan Alexandru',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
   {nr:35,mmh:'1264523',nume:'SUCIU GYORFI Nicolae',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:36,mmh:'1263842',nume:'SZABO Norbert Rolland',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:37,mmh:'1263843',nume:'SZATMARI Ludovic',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
@@ -736,7 +736,7 @@ const M2026=[
   {nr:39,mmh:'1264526',nume:'TODICA Serban Mihai',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:40,mmh:'1266378',nume:'TOMA-BOZERO Horatiu Ferdinand',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
   {nr:41,mmh:'1263844',nume:'TURNER Michael Robert George',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
-  {nr:42,mmh:'1272211',nume:'VLAD Alexandru Mircea',totalPlata:650,incasat:0,rest:650,mod:'',data:'',tip:'principal'},
+  {nr:42,mmh:'1272211',nume:'VLAD Alexandru Mircea',totalPlata:0,incasat:0,rest:0,mod:'',data:'',tip:'principal',scutit:true},
 ];
 const M2025=[
   {mmh:'1263841',nume:'SEUCEA Mihai',totalPlata:600,incasat:600,rest:0,mod:'Cash',data:'10.08.2025'},
@@ -910,7 +910,7 @@ const sortByDate = arr => [...arr].sort((a,b)=>{
   const pa=s=>{const p=s.split('.');return p.length===3?p[2]+p[1]+p[0]:s};
   return pa(a.data||'').localeCompare(pa(b.data||''))
 });
-const status = m => !m.incasat||m.incasat<=0?'unpaid':m.rest>0?'partial':'paid';
+const status = m => m.scutit?'paid':(!m.incasat||m.incasat<=0?'unpaid':m.rest>0?'partial':'paid');
 const initials = n => n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('');
 const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2);
 const yearLabel = y => y==='2026'?'2025-26':y==='2025'?'2024-25':'2023-24';
@@ -996,7 +996,9 @@ function renderCot(){
     const bt=st==='paid'?'Achitat':st==='partial'?'Parțial':'Restant';
     const ic=st==='unpaid'?'color:var(--red)':st==='partial'?'color:var(--amber)':'color:var(--green)';
     const tipHtml=m.year==='2026'
-      ?'<span class="badge tip-badge '+(m.tip==='secundar'?'bg-amber':'bg-green')+'" onclick="toggleTip(\''+m.mmh+'\')">'+(m.tip==='secundar'?'Secundar 350':'Principal 650')+'</span>'
+      ?m.scutit
+        ?'<span class="badge bg-blue" title="Avansat dupa sept 2025">Scutit ✓</span>'
+        :'<span class="badge tip-badge '+(m.tip==='secundar'?'bg-amber':'bg-green')+'" onclick="toggleTip(\''+m.mmh+'\')">'+(m.tip==='secundar'?'Secundar 350':'Principal 650')+'</span>'
       :'<span class="badge bg-gold">—</span>';
     return '<tr>'
       +'<td><b>'+m.nume+'</b></td>'
@@ -1015,7 +1017,7 @@ function renderCot(){
 }
 function toggleTip(mmh){
   const m=S.m2026.find(x=>x.mmh===mmh);
-  if(!m)return;
+  if(!m||m.scutit)return;
   m.tip=m.tip==='secundar'?'principal':'secundar';
   m.totalPlata=m.tip==='secundar'?350:650;
   m.rest=Math.max(0,m.totalPlata-(m.incasat||0));
